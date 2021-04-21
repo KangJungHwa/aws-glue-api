@@ -1,4 +1,4 @@
-package com.lgdisplay.bigdata.api.service;
+package com.lgdisplay.bigdata.api.service.glue;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
