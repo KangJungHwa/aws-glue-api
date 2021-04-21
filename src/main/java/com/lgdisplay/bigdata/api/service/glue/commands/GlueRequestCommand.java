@@ -11,9 +11,9 @@ public interface GlueRequestCommand {
 
     /**
      * Request Command의 명칭.
-     * 이 명칭은 IAM Action명이 되며 이 이름이 잘못 기입되어 있는 경우 Request를 제대로 처리하지 못한다.
+     * 이 명칭은 Glue Action명이 되며 이 이름이 잘못 기입되어 있는 경우 Request를 제대로 처리하지 못한다.
      *
-     * @return AWS IAM Action명
+     * @return AWS Glue Action명
      */
     String getName();
 
