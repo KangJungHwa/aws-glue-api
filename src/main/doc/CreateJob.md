@@ -7,6 +7,8 @@
 
 ### Request 정리
 
+* Name 필수
+
 ```
 {
    "AllocatedCapacity": number,
@@ -68,11 +70,11 @@ response = client.start_job_run(
 
 ## Response 정리
 
-* 에러 발생시 에러 코드(HTTP Status)를 IAM Reference를 확인하여 제대로 리턴하도록 한다.
-* 에러가 발생하여 데이터를 제공할 수 없는 경우 XML의 ROOT Element는 생성하도록 한다.
+* Name이 없으면 400
+* 해당 계정에 같은 이름의 Job Name이 있으면 400t
 
 ```
 {
-    'JobRunId': 'string'
+   "Name": "string"
 }
 ```

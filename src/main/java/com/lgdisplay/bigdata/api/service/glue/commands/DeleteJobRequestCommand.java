@@ -5,6 +5,8 @@ import com.lgdisplay.bigdata.api.service.glue.controller.RequestContext;
 import com.lgdisplay.bigdata.api.service.glue.model.Job;
 import com.lgdisplay.bigdata.api.service.glue.model.http.CreateJobRequest;
 import com.lgdisplay.bigdata.api.service.glue.model.http.CreateJobResponse;
+import com.lgdisplay.bigdata.api.service.glue.model.http.DeleteJobRequest;
+import com.lgdisplay.bigdata.api.service.glue.model.http.DeleteJobResponse;
 import com.lgdisplay.bigdata.api.service.glue.repository.JobRepository;
 import com.lgdisplay.bigdata.api.service.glue.util.ApplicationContextHolder;
 import lombok.extern.slf4j.Slf4j;
@@ -15,26 +17,24 @@ import org.springframework.http.ResponseEntity;
 import java.util.Optional;
 
 @Slf4j
-public class CreateJobRequestCommand extends GlueDefaultRequestCommand implements GlueRequestCommand {
+public class DeleteJobRequestCommand extends GlueDefaultRequestCommand implements GlueRequestCommand {
 
     @Autowired
     JobRepository jobRepository;
 
     @Override
     public String getName() {
-        return "AWSGlue.CreateJob";
+        return "AWSGlue.DeleteJob";
     }
 
     @Override
     public ResponseEntity execute(RequestContext context) throws Exception {
         ObjectMapper mapper = (ObjectMapper) ApplicationContextHolder.get().getBean("mapper");
 
-        CreateJobRequest createJobRequest = mapper.readValue(context.getBody(), CreateJobRequest.class);
+        DeleteJobRequest createJobRequest = mapper.readValue(context.getBody(), DeleteJobRequest.class);
         String jobName = createJobRequest.getName();
-        String scriptName = createJobRequest.getCommand().getName();
-        String scriptLocation = createJobRequest.getCommand().getScriptLocation();
 
-        CreateJobResponse response = CreateJobResponse.builder().name(jobName).build();
+        DeleteJobResponse response = DeleteJobResponse.builder().name(jobName).build();
 
         context.startStopWatch("Job Name 유효성 확인");
 
@@ -45,22 +45,15 @@ public class CreateJobRequestCommand extends GlueDefaultRequestCommand implement
         context.startStopWatch("사용자의 Job Name 유효성 확인");
 
         Optional<Job> byUsernameAndJobName = jobRepository.findByUsernameAndJobName(context.getUsername(), jobName);
-        if (byUsernameAndJobName.isPresent()) {
-            return ResponseEntity.status(400).body(response);
+        if (!byUsernameAndJobName.isPresent()) {
+            return ResponseEntity.status(200).body(response);
         }
 
-        context.startStopWatch("Job 저장");
+        context.startStopWatch("Job 삭제");
 
-        Job createJob = Job.builder()
-                .jobId(System.currentTimeMillis())
-                .jobName(jobName)
-                .username(context.getUsername())
-                .scriptName(scriptName)
-                .scriptLocation(scriptLocation)
-                .body(context.getBody()).build();
-        jobRepository.save(createJob);
+        jobRepository.delete(byUsernameAndJobName.get());
 
-        context.startStopWatch("CreateJob 결과 반환");
+        context.startStopWatch("DeleteJob 결과 반환");
 
         return ResponseEntity.ok(response);
     }
