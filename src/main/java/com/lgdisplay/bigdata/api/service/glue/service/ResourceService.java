@@ -36,4 +36,7 @@ public class ResourceService {
         return apiServerHealth;
     }
 
+    public String getJobScheduler() {
+        return "http://localhost:8888/glue/scheduler/startJobRun";
+    }
 }

@@ -49,7 +49,6 @@ public class SchedulerController extends DefaultController {
         return ResponseEntity.ok(_true());
     }
 
-
     @DeleteMapping("/job/kill/{jobId}")
     @ApiOperation(value = "Job 강제 중지", notes = "실행중인 Job을 강제 중지합니다.")
     public ResponseEntity kill(HttpServletRequest request, @PathVariable("jobId") String jobId) {

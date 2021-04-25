@@ -10,12 +10,17 @@ import com.lgdisplay.bigdata.api.service.glue.util.ApplicationContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Optional;
 
 @Slf4j
 public class CreateJobRequestCommand extends GlueDefaultRequestCommand implements GlueRequestCommand {
+
+    @Autowired
+    @Qualifier("mapper")
+    ObjectMapper mapper;
 
     @Autowired
     JobRepository jobRepository;
@@ -27,8 +32,6 @@ public class CreateJobRequestCommand extends GlueDefaultRequestCommand implement
 
     @Override
     public ResponseEntity execute(RequestContext context) throws Exception {
-        ObjectMapper mapper = (ObjectMapper) ApplicationContextHolder.get().getBean("mapper");
-
         CreateJobRequest createJobRequest = mapper.readValue(context.getBody(), CreateJobRequest.class);
         String jobName = createJobRequest.getName();
         String scriptName = createJobRequest.getCommand().getName();

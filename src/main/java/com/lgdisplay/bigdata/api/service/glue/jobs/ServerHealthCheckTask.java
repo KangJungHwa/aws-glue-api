@@ -23,8 +23,6 @@ public class ServerHealthCheckTask {
 
     long[] prevTicks = new long[CentralProcessor.TickType.values().length];
 
-    final static long GB = 1024 * 1024 * 1024;
-
     @Scheduled(fixedRate = 5000)
     public void execute() {
         SystemInfo si = new SystemInfo();

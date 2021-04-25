@@ -9,12 +9,21 @@ import com.lgdisplay.bigdata.api.service.glue.repository.JobRepository;
 import com.lgdisplay.bigdata.api.service.glue.util.ApplicationContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Optional;
 
 @Slf4j
 public class DeleteJobRequestCommand extends GlueDefaultRequestCommand implements GlueRequestCommand {
+
+    @Autowired
+    @Qualifier("mapper")
+    ObjectMapper mapper;
+
+    @Autowired
+    JobRepository jobRepository;
 
     @Override
     public String getName() {
@@ -23,9 +32,6 @@ public class DeleteJobRequestCommand extends GlueDefaultRequestCommand implement
 
     @Override
     public ResponseEntity execute(RequestContext context) throws Exception {
-        ObjectMapper mapper = (ObjectMapper) ApplicationContextHolder.get().getBean("mapper");
-        JobRepository jobRepository = ApplicationContextHolder.get().getBean(JobRepository.class);
-
         DeleteJobRequest deleteJobRequest = mapper.readValue(context.getBody(), DeleteJobRequest.class);
         String jobName = deleteJobRequest.getJobName();
 

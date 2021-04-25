@@ -49,6 +49,24 @@ public class ActionLogging {
     String resourceName;
 
     /**
+     * Job Run Id
+     */
+    @Column(name = "job_run_id", columnDefinition = "VARCHAR(255)", nullable = true)
+    String jobRunId;
+
+    /**
+     * Job Scheduler URL
+     */
+    @Column(name = "job_Scheduler_url", columnDefinition = "VARCHAR(255)", nullable = true)
+    String jobSchedulerUrl;
+
+    /**
+     * Job Scheduler에서 실행한 작업 ID
+     */
+    @Column(name = "scheduler_job_id", columnDefinition = "VARCHAR(255)", nullable = true)
+    String schedulerJobId;
+
+    /**
      * 성공 및 실패
      */
     @Column(name = "status", columnDefinition = "VARCHAR(10)", nullable = true)
@@ -89,4 +107,5 @@ public class ActionLogging {
     @Type(type = "org.hibernate.type.TextType")
     @Column(name = "layer_response_time", nullable = true)
     String layerResponseTime;
+
 }
