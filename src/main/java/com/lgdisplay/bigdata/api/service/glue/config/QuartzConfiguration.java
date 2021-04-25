@@ -1,6 +1,6 @@
 package com.lgdisplay.bigdata.api.service.glue.config;
 
-import com.lgdisplay.bigdata.api.service.glue.jobs.HealthCheckJob;
+import com.lgdisplay.bigdata.api.service.glue.jobs.JobSchedulerHealthCheckJob;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.JobDetail;
 import org.quartz.SimpleTrigger;
@@ -49,7 +49,7 @@ public class QuartzConfiguration {
     @Bean
     public JobDetailFactoryBean jobDetail() {
         JobDetailFactoryBean jobDetailFactory = new JobDetailFactoryBean();
-        jobDetailFactory.setJobClass(HealthCheckJob.class);
+        jobDetailFactory.setJobClass(JobSchedulerHealthCheckJob.class);
         jobDetailFactory.setName("Job Scheduler Health Check Job");
         jobDetailFactory.setDurability(true);
         return jobDetailFactory;

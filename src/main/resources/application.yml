@@ -73,8 +73,7 @@ app:
     read-limit: 131073
   region-name: korea
   iam-url: http://localhost:9999/iam
-  schduler-urls:
-    - http://localhost:8888/glue/scheduler
+  scheduler-urls: http://192.168.1.1:8888/glue/scheduler/status, http://192.168.1.2:8888/glue/scheduler/status, http://192.168.1.3:8888/glue/scheduler/status
   service-context-paths:
     glue: /glue
 

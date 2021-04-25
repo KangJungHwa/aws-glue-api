@@ -7,7 +7,9 @@
 
 ### Request 정리
 
-* Path는 지정할 수없음. 따라서 타 API에서도 사용자 식별에 Path는 최소화해야함.
+* JobName (필수)
+* JobRunId 재실행을 위한 ID (옵션)
+* Arguments 인자 (옵션)
 
 ```javascript
 {
@@ -49,8 +51,9 @@ response = client.start_job_run(
 
 ## Response 정리
 
-* 에러 발생시 에러 코드(HTTP Status)를 IAM Reference를 확인하여 제대로 리턴하도록 한다.
-* 에러가 발생하여 데이터를 제공할 수 없는 경우 XML의 ROOT Element는 생성하도록 한다.
+* EntityNotFoundException (400)
+* InvalidInputException (400)
+* InternalServiceException (500)
 
 ```javascript
 {
