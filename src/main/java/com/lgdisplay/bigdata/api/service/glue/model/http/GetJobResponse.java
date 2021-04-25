@@ -10,9 +10,9 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DeleteJobRequest {
+public class GetJobResponse {
 
-    @JsonProperty("JobName")
-    private String jobName;
+    @JsonProperty("Job")
+    private Job job;
 
 }

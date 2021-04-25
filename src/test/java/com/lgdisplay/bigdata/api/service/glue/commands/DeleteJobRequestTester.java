@@ -8,11 +8,6 @@ import com.amazonaws.services.glue.AWSGlue;
 import com.amazonaws.services.glue.AWSGlueClient;
 import com.amazonaws.services.glue.model.DeleteJobRequest;
 import com.amazonaws.services.glue.model.DeleteJobResult;
-import com.amazonaws.services.identitymanagement.model.Tag;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 public class DeleteJobRequestTester {
 
@@ -30,13 +25,14 @@ public class DeleteJobRequestTester {
                 .withEndpointConfiguration(configuration)
                 .build();
 
-
+        //////////////////////////////////////////////////
         DeleteJobRequest request = new DeleteJobRequest();
         request.setJobName("ExampleJob");
 
         DeleteJobResult result = glue.deleteJob(request);
 
         System.out.println(result.getJobName());
+        //////////////////////////////////////////////////
     }
 
 }

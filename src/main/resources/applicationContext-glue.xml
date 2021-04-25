@@ -8,6 +8,7 @@
             <list>
                 <bean class="com.lgdisplay.bigdata.api.service.glue.commands.CreateJobRequestCommand"/>
                 <bean class="com.lgdisplay.bigdata.api.service.glue.commands.DeleteJobRequestCommand"/>
+                <bean class="com.lgdisplay.bigdata.api.service.glue.commands.GetJobRequestCommand"/>
             </list>
         </property>
     </bean>

@@ -45,7 +45,7 @@ public class CreateJobRequestCommand extends GlueDefaultRequestCommand implement
         context.startStopWatch("사용자의 Job Name 유효성 확인");
 
         Optional<Job> byUsernameAndJobName = jobRepository.findByUsernameAndJobName(context.getUsername(), jobName);
-        if (!byUsernameAndJobName.isPresent()) {
+        if (byUsernameAndJobName.isPresent()) {
             return ResponseEntity.status(400).body(response);
         }
 
