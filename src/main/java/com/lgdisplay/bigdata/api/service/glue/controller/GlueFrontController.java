@@ -41,15 +41,18 @@ public class GlueFrontController {
         Long requestId = System.currentTimeMillis();
         response.setHeader("x-amzn-RequestId", String.valueOf(requestId));
         GlueRequestCommand command = requestDispatcher.getCommand(request, body);
+
         RequestContext context = new RequestContext(request, response, body, String.valueOf(requestId), command.getName(), region);
 
         ActionLogging logging = ActionLogging.builder()
                 .actionName(command.getName())
-                .serviceType("IAM")
+                .serviceType("GLUE")
                 .ipAddress(request.getRemoteHost())
                 .requestId(requestId)
                 .username(context.getUsername()).build();
         actionLoggingService.startUsage(logging);
+
+        context.setLogging(logging);
 
         try {
             MDC.put("requestId", context.getRequestId());
@@ -59,8 +62,7 @@ public class GlueFrontController {
 
             log.info("{} 요청에 대해서 처리를 시작합니다.", command.getName());
 
-            // TODO : uncomment
-            // if (!command.authorize(context)) throw new IllegalArgumentException("해당 사용자를 인증할수 없습니다.");
+            if (!command.authorize(context)) throw new IllegalArgumentException("해당 사용자를 인증할수 없습니다.");
 
             ResponseEntity result = command.execute(context);
 
@@ -73,12 +75,14 @@ public class GlueFrontController {
 
             logging.setElapsedTime(System.currentTimeMillis() - requestId);
             logging.setHttpStatus(result.getStatusCodeValue());
+            logging.setLayerResponseTime(context.getStopWatch().prettyJson());
             actionLoggingService.endUsage(logging, null);
 
             return result;
         } catch (Exception e) {
             logging.setStatus(ActionLoggingStatusTypeEnum.FAILED);
             logging.setElapsedTime(System.currentTimeMillis() - requestId);
+            logging.setLayerResponseTime(context.getStopWatch().prettyJson());
             actionLoggingService.endUsage(logging, e);
 
             log.warn("{} 요청이 에러가 발생하여 500 에러로 처리합니다.\n{}", command.getName(), ExceptionUtils.getFullStackTrace(e));

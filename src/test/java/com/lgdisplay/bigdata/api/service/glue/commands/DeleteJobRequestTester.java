@@ -6,16 +6,15 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.glue.AWSGlue;
 import com.amazonaws.services.glue.AWSGlueClient;
-import com.amazonaws.services.glue.model.CreateJobRequest;
-import com.amazonaws.services.glue.model.CreateJobResult;
-import com.amazonaws.services.glue.model.JobCommand;
+import com.amazonaws.services.glue.model.DeleteJobRequest;
+import com.amazonaws.services.glue.model.DeleteJobResult;
 import com.amazonaws.services.identitymanagement.model.Tag;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class CreateJobRequestTester {
+public class DeleteJobRequestTester {
 
     public static void main(String[] args) throws Exception {
         BasicAWSCredentials awsCreds = new BasicAWSCredentials("admin", "admin123");
@@ -31,16 +30,13 @@ public class CreateJobRequestTester {
                 .withEndpointConfiguration(configuration)
                 .build();
 
-        CreateJobRequest request = new CreateJobRequest();
-        JobCommand command = new JobCommand();
-        command.setName("test");
-        command.setPythonVersion("3.7.1");
-        command.setScriptLocation("s3:/test.py");
-        request.setCommand(command);
-        request.setName("ExampleJob");
 
-        CreateJobResult result = glue.createJob(request);
+        DeleteJobRequest request = new DeleteJobRequest();
+        request.setJobName("ExampleJob");
 
-        System.out.println(result.getName());
+        DeleteJobResult result = glue.deleteJob(request);
+
+        System.out.println(result.getJobName());
     }
+
 }

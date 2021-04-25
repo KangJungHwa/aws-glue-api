@@ -27,9 +27,9 @@ public class GlueRequestDispatcher implements InitializingBean, ApplicationConte
     List<GlueRequestCommand> commands;
 
     /**
-     * S3 API Context Path
+     * Glue API Context Path
      */
-    String s3ContextPath;
+    String glueContextPath;
 
     public GlueRequestCommand getCommand(HttpServletRequest request, String body) {
         String actionName = request.getHeader("X-Amz-Target");
@@ -60,6 +60,6 @@ public class GlueRequestDispatcher implements InitializingBean, ApplicationConte
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         Environment env = applicationContext.getBean(Environment.class);
-        this.s3ContextPath = env.getProperty("app.service-context-paths.s3");
+        this.glueContextPath = env.getProperty("app.service-context-paths.glue");
     }
 }

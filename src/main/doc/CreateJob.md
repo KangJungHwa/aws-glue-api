@@ -2,12 +2,14 @@
 
 ## API Reference
 
-* https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/glue.html#Glue.Client.create_job
 * https://docs.aws.amazon.com/glue/latest/webapi/API_CreateJob.html
+* https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/glue.html#Glue.Client.create_job
 
 ### Request 정리
 
-```
+* Name은 필수 (1~255 길이)
+
+```json
 {
    "AllocatedCapacity": number,
    "Command": { 
@@ -47,6 +49,8 @@
 }
 ```
 
+Python 호출코드입니다.
+
 ```python
 response = client.start_job_run(
     JobName='string',
@@ -66,13 +70,63 @@ response = client.start_job_run(
 )
 ```
 
+Java 호출 코드입니다.
+
+```java
+import com.amazonaws.ClientConfiguration;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.client.builder.AwsClientBuilder;
+import com.amazonaws.services.glue.AWSGlue;
+import com.amazonaws.services.glue.AWSGlueClient;
+import com.amazonaws.services.glue.model.CreateJobRequest;
+import com.amazonaws.services.glue.model.CreateJobResult;
+import com.amazonaws.services.glue.model.JobCommand;
+import com.amazonaws.services.identitymanagement.model.Tag;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+public class CreateJobRequestTester {
+
+    public static void main(String[] args) throws Exception {
+        BasicAWSCredentials awsCreds = new BasicAWSCredentials("admin", "admin123");
+
+        AwsClientBuilder.EndpointConfiguration configuration = new AwsClientBuilder.EndpointConfiguration("http://localhost:8888/glue", "korea");
+
+        ClientConfiguration clientConfiguration = new ClientConfiguration();
+        clientConfiguration.setMaxErrorRetry(0); // 0로 하지 않으면 여러번 호출한다.
+
+        AWSGlue glue = AWSGlueClient.builder()
+                .withClientConfiguration(clientConfiguration)
+                .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
+                .withEndpointConfiguration(configuration)
+                .build();
+
+        CreateJobRequest request = new CreateJobRequest();
+        JobCommand command = new JobCommand();
+        command.setName("test");
+        command.setPythonVersion("3.7.1");
+        command.setScriptLocation("s3:/test.py");
+        request.setCommand(command);
+        request.setName("ExampleJob");
+
+        CreateJobResult result = glue.createJob(request);
+
+        System.out.println(result.getName());
+    }
+}
+```
+
 ## Response 정리
 
-* 에러 발생시 에러 코드(HTTP Status)를 IAM Reference를 확인하여 제대로 리턴하도록 한다.
-* 에러가 발생하여 데이터를 제공할 수 없는 경우 XML의 ROOT Element는 생성하도록 한다.
+* AlreadyExistsException (400)
+* InvalidInputException (400)
+* InternalServiceException (500)
 
 ```
 {
-    'JobRunId': 'string'
+   "Name": "string"
 }
 ```

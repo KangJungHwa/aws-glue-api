@@ -1,6 +1,7 @@
 package com.lgdisplay.bigdata.api.service.glue.controller;
 
 import com.lgdisplay.bigdata.api.service.glue.commands.GlueDefaultRequestCommand;
+import com.lgdisplay.bigdata.api.service.glue.model.ActionLogging;
 import com.lgdisplay.bigdata.api.service.glue.util.StopWatch;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,6 +26,7 @@ public class RequestContext {
     String commandName;
     String region;
     String endpoint;
+    ActionLogging logging;
 
     public RequestContext(HttpServletRequest request, HttpServletResponse response, String body, String requestId, String command, String region) {
         this.request = request;

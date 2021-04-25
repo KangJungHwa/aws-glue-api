@@ -10,6 +10,49 @@
 
 * MariaDB 10.2
 
+### Locale
+
+정상적으로 Logging을 남기려면 Database에는 반드시 한글을 지원해야 합니다. MySQL의 경우 다음의 Query로 언어를 확인할 수 있습니다.
+
+```
+MariaDB [test]> SHOW VARIABLES LIKE 'char%';
++--------------------------+-----------------------------------------------+
+| Variable_name            | Value                                         |
++--------------------------+-----------------------------------------------+
+| character_set_client     | euckr                                         |
+| character_set_connection | euckr                                         |
+| character_set_database   | latin1                                        |
+| character_set_filesystem | binary                                        |
+| character_set_results    | euckr                                         |
+| character_set_server     | utf8                                          |
+| character_set_system     | utf8                                          |
+| character_sets_dir       | C:\Program Files\MariaDB 10.4\share\charsets\ |
++--------------------------+-----------------------------------------------+
+8 rows in set (0.000 sec)
+
+MariaDB [test]> SHOW VARIABLES LIKE 'collation%';
++----------------------+-------------------+
+| Variable_name        | Value             |
++----------------------+-------------------+
+| collation_connection | euckr_korean_ci   |
+| collation_database   | latin1_swedish_ci |
+| collation_server     | utf8_general_ci   |
++----------------------+-------------------+
+3 rows in set (0.000 sec)
+```
+
+특정 데이터베이스의 Locale을 확인하려면 다음과 같이 쿼리를 실행합니다.
+
+```
+MariaDB [test]> SELECT default_character_set_name, DEFAULT_COLLATION_NAME FROM information_schema.SCHEMATA WHERE schema_name = "glue";
++----------------------------+------------------------+
+| default_character_set_name | DEFAULT_COLLATION_NAME |
++----------------------------+------------------------+
+| utf8                       | utf8_general_ci        |
++----------------------------+------------------------+
+1 row in set (0.000 sec)
+```
+
 ### MariaDB
 
 ```sql

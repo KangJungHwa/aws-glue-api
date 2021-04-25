@@ -1,39 +1,80 @@
-# CreateJob
+# DeleteJob
 
 ## API Reference
 
-* https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/glue.html#Glue.Client.create_job
+* https://docs.aws.amazon.com/glue/latest/webapi/API_DeleteJob.html
+* https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/glue.html#Glue.Client.delete_job
 
 ### Request 정리
 
-* Path는 지정할 수없음. 따라서 타 API에서도 사용자 식별에 Path는 최소화해야함.
+* JobName 필수 (1~255 길이)
 
+```json
+{
+  "JobName": "string"
+}
 ```
-https://iam.amazonaws.com/?Action=GetUser
-&UserName=Bob
-&Version=2010-05-08
-&AUTHPARAMS
+
+Python 호출코드입니다.
+
+```python
+response = client.delete_job(
+    JobName='string'
+)
+```
+
+Java 호출 코드입니다.
+
+```java
+import com.amazonaws.ClientConfiguration;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.client.builder.AwsClientBuilder;
+import com.amazonaws.services.glue.AWSGlue;
+import com.amazonaws.services.glue.AWSGlueClient;
+import com.amazonaws.services.glue.model.DeleteJobRequest;
+import com.amazonaws.services.glue.model.DeleteJobResult;
+import com.amazonaws.services.identitymanagement.model.Tag;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+public class DeleteJobRequestTester {
+
+    public static void main(String[] args) throws Exception {
+        BasicAWSCredentials awsCreds = new BasicAWSCredentials("admin", "admin123");
+
+        AwsClientBuilder.EndpointConfiguration configuration = new AwsClientBuilder.EndpointConfiguration("http://localhost:8888/glue", "korea");
+
+        ClientConfiguration clientConfiguration = new ClientConfiguration();
+        clientConfiguration.setMaxErrorRetry(0); // 0로 하지 않으면 여러번 호출한다.
+
+        AWSGlue glue = AWSGlueClient.builder()
+                .withClientConfiguration(clientConfiguration)
+                .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
+                .withEndpointConfiguration(configuration)
+                .build();
+
+
+        DeleteJobRequest request = new DeleteJobRequest();
+        request.setJobName("ExampleJob");
+
+        DeleteJobResult result = glue.deleteJob(request);
+
+        System.out.println(result.getJobName());
+    }
+
+}
 ```
 
 ## Response 정리
 
-* 에러 발생시 에러 코드(HTTP Status)를 IAM Reference를 확인하여 제대로 리턴하도록 한다.
-* 에러가 발생하여 데이터를 제공할 수 없는 경우 XML의 ROOT Element는 생성하도록 한다.
+* InternalServiceException (500)
+* InvalidInputException (400)
 
-```xml
-<GetUserResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
-    <GetUserResult>
-        <User>
-            <UserId>AIDACKCEVSQ6C2EXAMPLE</UserId>
-            <Path>/division_abc/subdivision_xyz/</Path>
-            <UserName>Bob</UserName>
-            <Arn>arn:aws:iam::123456789012:user/division_abc/subdivision_xyz/Bob</Arn>
-            <CreateDate>2013-10-02T17:01:44Z</CreateDate>
-            <PasswordLastUsed>2014-10-10T14:37:51Z</PasswordLastUsed>
-        </User>
-    </GetUserResult>
-    <ResponseMetadata>
-        <RequestId>7a62c49f-347e-4fc4-9331-6e8eEXAMPLE</RequestId>
-    </ResponseMetadata>
-</GetUserResponse>
+```
+{
+   "JobName": "string"
+}
 ```

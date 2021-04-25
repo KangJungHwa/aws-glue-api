@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-@Entity(name = "api_glue_scheduler_logging")
+@Entity(name = "api_glue_usage_logging")
 public class ActionLogging {
 
     @Id
