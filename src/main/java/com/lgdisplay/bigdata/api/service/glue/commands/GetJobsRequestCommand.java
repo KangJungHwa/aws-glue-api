@@ -63,7 +63,7 @@ public class GetJobsRequestCommand extends GlueDefaultRequestCommand implements 
 //        }
 
 
-        response.setJob(byUsername);
+        response.setJobs(byUsername);
         context.startStopWatch("Job 조회");
         context.startStopWatch("GetJob 결과 반환");
 
