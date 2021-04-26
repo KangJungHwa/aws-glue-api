@@ -30,11 +30,12 @@ public class GetJobsRequestTester {
         request.setMaxResults(3);
         GetJobsResult result=glue.getJobs(request);
         System.out.println(result);
-//        for (int i = 0; i <result.getJobs().size() ; i++) {
-//            //System.out.println(result.getJobs().get(i).getJobName());
-//            System.out.println(result.getJobs().get(i).getCommand().getScriptLocation());
-//            System.out.println(result.getJobs().get(i).getCommand().getPythonVersion());
-//        }
+        for (int i = 0; i <result.getJobs().size() ; i++) {
+            System.out.println(result.getJobs().get(i).getName());
+            System.out.println(result.getJobs().get(i).getCommand().getName());
+            System.out.println(result.getJobs().get(i).getCommand().getScriptLocation());
+            System.out.println(result.getJobs().get(i).getCommand().getPythonVersion());
+        }
         //////////////////////////////////////////////
     }
 

@@ -1,11 +1,13 @@
 package com.lgdisplay.bigdata.api.service.glue.commands;
 
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lgdisplay.bigdata.api.service.glue.controller.RequestContext;
 import com.lgdisplay.bigdata.api.service.glue.model.http.Job;
 import com.lgdisplay.bigdata.api.service.glue.model.http.GetJobsRequest;
 import com.lgdisplay.bigdata.api.service.glue.model.http.GetJobsResponse;
+import com.lgdisplay.bigdata.api.service.glue.model.http.JobCommand;
 import com.lgdisplay.bigdata.api.service.glue.repository.JobRepository;
 import com.lgdisplay.bigdata.api.service.glue.util.ApplicationContextHolder;
 import lombok.extern.slf4j.Slf4j;
@@ -53,17 +55,18 @@ public class GetJobsRequestCommand extends GlueDefaultRequestCommand implements 
 //        List<com.lgdisplay.bigdata.api.service.glue.model.http.Job> resJobList
 //                = mapper2.convertValue(byUsername , new TypeReference<List<com.lgdisplay.bigdata.api.service.glue.model.http.Job>>() {});
 
-//        List<com.lgdisplay.bigdata.api.service.glue.model.http.Job> resJobList =
-//                new ArrayList<>();
-//        for (int i = 0; i <byUsername.size(); i++) {
-//            com.lgdisplay.bigdata.api.service.glue.model.Job job=byUsername.get(i);
-//            com.lgdisplay.bigdata.api.service.glue.model.http.Job finalResponseJob =
-//                    mapper.readValue(job.getBody(), com.lgdisplay.bigdata.api.service.glue.model.http.Job.class);
-//            resJobList.add(finalResponseJob);
-//        }
+        List<com.lgdisplay.bigdata.api.service.glue.model.http.Job> resJobList =
+                new ArrayList<>();
+        for (int i = 0; i <byUsername.size(); i++) {
+            com.lgdisplay.bigdata.api.service.glue.model.Job job=byUsername.get(i);
+            com.lgdisplay.bigdata.api.service.glue.model.http.Job finalResponseJob =
+                    mapper.readValue(job.getBody(), com.lgdisplay.bigdata.api.service.glue.model.http.Job.class);
+            resJobList.add(finalResponseJob);
+        }
 
 
-        response.setJobs(byUsername);
+        response.setJobs(resJobList);
+        response.setNextToken("\t");
         context.startStopWatch("Job 조회");
         context.startStopWatch("GetJob 결과 반환");
 

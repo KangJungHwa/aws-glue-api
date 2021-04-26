@@ -29,11 +29,11 @@ public class CreateJobRequestTester {
         //////////////////////////////////////////////////
         CreateJobRequest request = new CreateJobRequest();
         JobCommand command = new JobCommand();
-        command.setName("test");
+        command.setName("test_2");
         command.setPythonVersion("3.7.1");
-        command.setScriptLocation("s3:/test.py");
+        command.setScriptLocation("s3:/test_2.py");
         request.setCommand(command);
-        request.setName("sample");
+        request.setName("sample2");
 
         CreateJobResult result = glue.createJob(request);
 
