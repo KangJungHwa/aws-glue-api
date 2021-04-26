@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 public class GetJobsRequestCommand extends GlueDefaultRequestCommand implements GlueRequestCommand {
@@ -40,7 +41,7 @@ public class GetJobsRequestCommand extends GlueDefaultRequestCommand implements 
         //        context.startStopWatch("사용자 유효성 확인");
         // context.startStopWatch("사용자의 Job Name 유효성 확인");
 
-        List<com.lgdisplay.bigdata.api.service.glue.model.Job> byUsername = jobRepository.findByUsername(context.getUsername());
+        Optional<List<com.lgdisplay.bigdata.api.service.glue.model.Job>> jobsByUsername = jobRepository.findJobsByUsername(context.getUsername());
 
 //        if (!byUsername.isPresent()) {
 //            return ResponseEntity.status(200).body(response);
@@ -55,14 +56,13 @@ public class GetJobsRequestCommand extends GlueDefaultRequestCommand implements 
 //        List<com.lgdisplay.bigdata.api.service.glue.model.http.Job> resJobList
 //                = mapper2.convertValue(byUsername , new TypeReference<List<com.lgdisplay.bigdata.api.service.glue.model.http.Job>>() {});
 
-        List<com.lgdisplay.bigdata.api.service.glue.model.http.Job> resJobList =
-                new ArrayList<>();
-        for (int i = 0; i <byUsername.size(); i++) {
-            com.lgdisplay.bigdata.api.service.glue.model.Job job=byUsername.get(i);
-            com.lgdisplay.bigdata.api.service.glue.model.http.Job finalResponseJob =
-                    mapper.readValue(job.getBody(), com.lgdisplay.bigdata.api.service.glue.model.http.Job.class);
-            resJobList.add(finalResponseJob);
-        }
+        List<com.lgdisplay.bigdata.api.service.glue.model.http.Job> resJobList = new ArrayList<>();
+//        for (int i = 0; i <byUsername.size(); i++) {
+//            com.lgdisplay.bigdata.api.service.glue.model.Job job=byUsername.get(i);
+//            com.lgdisplay.bigdata.api.service.glue.model.http.Job finalResponseJob =
+//                    mapper.readValue(job.getBody(), com.lgdisplay.bigdata.api.service.glue.model.http.Job.class);
+//            resJobList.add(finalResponseJob);
+//        }
 
 
         response.setJobs(resJobList);

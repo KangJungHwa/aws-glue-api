@@ -6,8 +6,6 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.glue.AWSGlue;
 import com.amazonaws.services.glue.AWSGlueClient;
-import com.amazonaws.services.glue.model.GetJobsRequest;
-import com.amazonaws.services.glue.model.GetJobsResult;
 import com.amazonaws.services.glue.model.ListJobsRequest;
 import com.amazonaws.services.glue.model.ListJobsResult;
 
@@ -29,17 +27,10 @@ public class ListJobsRequestTester {
 
         //////////////////////////////////////////////
         ListJobsRequest request = new ListJobsRequest();
+        request.setMaxResults(2);
 
-//        List joblist = new ArrayList();
-//        Job job= new Job();
-//        job.setName("sample");
-//        joblist.add(job);
-        request.setMaxResults(3);
-
-        ListJobsResult result=glue.listJobs(request);
+        ListJobsResult result = glue.listJobs(request);
         System.out.println(result);
         //////////////////////////////////////////////
     }
-
-
 }

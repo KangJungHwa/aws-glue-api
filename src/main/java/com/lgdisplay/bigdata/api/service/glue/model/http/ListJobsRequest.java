@@ -13,6 +13,7 @@ import java.util.Map;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ListJobsRequest {
+
     @JsonProperty("MextToken")
     @JsonIgnoreProperties(ignoreUnknown = true)
     private String nextToken;
@@ -22,6 +23,6 @@ public class ListJobsRequest {
     private Integer maxResults;
 
     @JsonProperty("Tags")
-    private Map<String,String> tag;
+    private Map<String, String> tag;
 }
 
