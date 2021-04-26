@@ -11,4 +11,7 @@ public interface JobRepository extends CrudRepository<Job, Long> {
     Optional<Job> findByUsernameAndJobName(String username, String jobName);
     // GetJobs에서 조회결과를 limit를 줘서 조회하는 기능을 구현해야 함.
     List<Job> findByUsername(String username);
+
+    List<Job> findByJobNameIn(List<String> jobname);
+
 }
