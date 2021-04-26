@@ -36,15 +36,13 @@ public class UpdateJobRequestTester {
         command.setName("sample5");
         command.setPythonVersion("3.7.1");
         command.setScriptLocation("s3:/test_update.py");
+
         update.setCommand(command);
-        request.setJobName("sample5");
+        request.setJobName("sample3");
         request.setJobUpdate(update);
 
         UpdateJobResult result = glue.updateJob(request);
-
         System.out.println(result.getJobName());
-
-
         //////////////////////////////////////////////
     }
 

@@ -6,7 +6,6 @@ import com.lgdisplay.bigdata.api.service.glue.model.Job;
 import com.lgdisplay.bigdata.api.service.glue.model.http.CreateJobRequest;
 import com.lgdisplay.bigdata.api.service.glue.model.http.CreateJobResponse;
 import com.lgdisplay.bigdata.api.service.glue.repository.JobRepository;
-import com.lgdisplay.bigdata.api.service.glue.util.ApplicationContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

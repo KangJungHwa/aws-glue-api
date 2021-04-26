@@ -3,14 +3,13 @@ package com.lgdisplay.bigdata.api.service.glue.commands;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lgdisplay.bigdata.api.service.glue.controller.RequestContext;
 import com.lgdisplay.bigdata.api.service.glue.model.Job;
-import com.lgdisplay.bigdata.api.service.glue.model.http.DeleteJobResponse;
 import com.lgdisplay.bigdata.api.service.glue.model.http.UpdateJobRequest;
 import com.lgdisplay.bigdata.api.service.glue.model.http.UpdateJobResponse;
 import com.lgdisplay.bigdata.api.service.glue.repository.JobRepository;
-import com.lgdisplay.bigdata.api.service.glue.util.ApplicationContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Optional;
@@ -21,6 +20,10 @@ public class UpdateJobRequestCommand extends GlueDefaultRequestCommand implement
     @Autowired
     JobRepository jobRepository;
 
+    @Autowired
+    @Qualifier("mapper")
+    ObjectMapper mapper;
+
     @Override
     public String getName() {
         return "AWSGlue.UpdateJob";
@@ -28,13 +31,11 @@ public class UpdateJobRequestCommand extends GlueDefaultRequestCommand implement
 
     @Override
     public ResponseEntity execute(RequestContext context) throws Exception {
-        log.debug("~~~~~~~~~~~~~~~~~~~~~~~~~~start~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        ObjectMapper mapper = (ObjectMapper) ApplicationContextHolder.get().getBean("mapper");
-
-        UpdateJobRequest JobRequest  = mapper.readValue(context.getBody(), UpdateJobRequest.class);
+        UpdateJobRequest JobRequest = mapper.readValue(context.getBody(), UpdateJobRequest.class);
         String jobName = JobRequest.getJobName();
         String scriptName = JobRequest.getJobUpdate().getJobCommand().getName();
         String scriptLocation = JobRequest.getJobUpdate().getJobCommand().getScriptLocation();
+
         UpdateJobResponse response = UpdateJobResponse.builder().jobName(jobName).build();
 
         context.startStopWatch("Job Name 유효성 확인");
@@ -48,22 +49,22 @@ public class UpdateJobRequestCommand extends GlueDefaultRequestCommand implement
         Optional<Job> byUsernameAndJobName = jobRepository.findByUsernameAndJobName(context.getUsername(), jobName);
         if (!byUsernameAndJobName.isPresent()) {
             return ResponseEntity.status(400).body(response);
-
-        }else{
-            Job job=byUsernameAndJobName.get();
-            Long jobId = job.getJobId();
-
-            context.startStopWatch("Job 수정");
-
-            Job updateJob = Job.builder()
-                    .jobId(jobId)
-                    .jobName(jobName)
-                    .username(context.getUsername())
-                    .scriptName(scriptName)
-                    .scriptLocation(scriptLocation)
-                    .body(context.getBody()).build();
-            jobRepository.save(updateJob);
         }
+
+        Job job = byUsernameAndJobName.get();
+        Long jobId = job.getJobId();
+
+        context.startStopWatch("Job 수정");
+
+        Job updateJob = Job.builder()
+                .jobId(jobId)
+                .jobName(jobName)
+                .username(context.getUsername())
+                .scriptName(scriptName)
+                .scriptLocation(scriptLocation)
+                .body(context.getBody()).build();
+        jobRepository.save(updateJob);
+
         context.startStopWatch("UpdateJob 결과 반환");
 
         return ResponseEntity.ok(response);
