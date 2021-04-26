@@ -1,5 +1,30 @@
-package com.lgdisplay.bigdata.api.service.glue.commands;
+# UpdateJoㅠ
 
+## API Reference
+
+* https://docs.aws.amazon.com/glue/latest/webapi/API_UpdateJob.html
+* https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/glue.html#Glue.Client.update_job
+
+### Request 정리
+
+* JobName 필수 (1~255 길이)
+
+```json
+{
+  "JobName": "string"
+}
+```
+
+Python 호출코드입니다.
+
+```python
+response = client.update_job(
+    JobName='string'
+)
+```
+
+Java 호출 코드입니다.
+```
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -46,3 +71,15 @@ public class UpdateJobRequestTester {
     }
 
 }
+```
+
+## Response 정리
+
+* InternalServiceException (500)
+* InvalidInputException (400)
+
+```
+{
+   "JobName": "string"
+}
+```

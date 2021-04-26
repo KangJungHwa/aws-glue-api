@@ -13,6 +13,7 @@
                 <bean class="com.lgdisplay.bigdata.api.service.glue.commands.UpdateJobRequestCommand"/>
                 <bean class="com.lgdisplay.bigdata.api.service.glue.commands.GetJobsRequestCommand"/>
                 <bean class="com.lgdisplay.bigdata.api.service.glue.commands.ListJobsRequestCommand"/>
+                <bean class="com.lgdisplay.bigdata.api.service.glue.commands.BatchGetJobsRequestCommand"/>
             </list>
         </property>
     </bean>

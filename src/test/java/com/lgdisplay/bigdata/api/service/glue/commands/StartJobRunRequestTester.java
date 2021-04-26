@@ -27,7 +27,7 @@ public class StartJobRunRequestTester {
 
         //////////////////////////////////////////////////
         StartJobRunRequest request = new StartJobRunRequest();
-        request.setJobName("ExampleJob");
+        request.setJobName("sample");
 
         StartJobRunResult result = glue.startJobRun(request);
 

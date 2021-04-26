@@ -6,12 +6,15 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.glue.AWSGlue;
 import com.amazonaws.services.glue.AWSGlueClient;
-import com.amazonaws.services.glue.model.JobCommand;
-import com.amazonaws.services.glue.model.JobUpdate;
-import com.amazonaws.services.glue.model.UpdateJobRequest;
-import com.amazonaws.services.glue.model.UpdateJobResult;
+import com.amazonaws.services.glue.model.BatchGetJobsRequest;
+import com.amazonaws.services.glue.model.BatchGetJobsResult;
+import com.amazonaws.services.glue.model.GetJobsRequest;
+import com.amazonaws.services.glue.model.GetJobsResult;
 
-public class UpdateJobRequestTester {
+import java.util.ArrayList;
+import java.util.List;
+
+public class BatchGetJobsRequestTester {
 
     public static void main(String[] args) throws Exception {
         BasicAWSCredentials awsCreds = new BasicAWSCredentials("admin", "admin123");
@@ -28,20 +31,21 @@ public class UpdateJobRequestTester {
                 .build();
 
         //////////////////////////////////////////////
-        UpdateJobRequest request = new UpdateJobRequest();
-        JobUpdate update = new JobUpdate();
-        JobCommand command = new JobCommand();
+        BatchGetJobsRequest request = new BatchGetJobsRequest();
+        List<String> jobnames = new ArrayList<>();
+        jobnames.add("sample");
+        jobnames.add("sample1");
+        request.setJobNames(jobnames);
 
-        command.setName("sample5");
-        command.setPythonVersion("3.7.1");
-        command.setScriptLocation("s3:/test_update.py");
 
-        update.setCommand(command);
-        request.setJobName("sample3");
-        request.setJobUpdate(update);
-
-        UpdateJobResult result = glue.updateJob(request);
-        System.out.println(result.getJobName());
+        BatchGetJobsResult result=glue.batchGetJobs(request);
+        System.out.println(result);
+        for (int i = 0; i <result.getJobs().size() ; i++) {
+            System.out.println(result.getJobs().get(i).getName());
+            System.out.println(result.getJobs().get(i).getCommand().getName());
+            System.out.println(result.getJobs().get(i).getCommand().getScriptLocation());
+            System.out.println(result.getJobs().get(i).getCommand().getPythonVersion());
+        }
         //////////////////////////////////////////////
     }
 
