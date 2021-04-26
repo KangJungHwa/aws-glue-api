@@ -22,6 +22,7 @@
 ## Response 정리
 
 * InternalServiceException (500)
+* EntityNotFoundException (400)
 * InvalidInputException (400)
 
 ```
