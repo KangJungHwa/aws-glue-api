@@ -44,14 +44,13 @@ public class ListJobsRequestCommand extends GlueDefaultRequestCommand implements
 //            return ResponseEntity.status(200).body(response);
 //        }
 
-       // List<Job> job=byUsername;
-        Stream<Job> stream = byUsername.stream();
-        stream.forEach(job ->{
-            List<String> jobList = new ArrayList<>();
-            jobList.add(job.getJobName());
-            response.setJobNames(jobList);
-        });
 
+        List<String> jobNameList = new ArrayList<>();
+        for (int i = 0;i<byUsername.size(); i++) {
+            jobNameList.add(byUsername.get(i).getJobName());
+        }
+        response.setJobNames(jobNameList);
+        response.setNextToken("/t");
         context.startStopWatch("사용자별 Job명 조회");
         context.startStopWatch("List Job 결과 반환");
 

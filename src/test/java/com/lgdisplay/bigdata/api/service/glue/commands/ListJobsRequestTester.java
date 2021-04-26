@@ -8,6 +8,8 @@ import com.amazonaws.services.glue.AWSGlue;
 import com.amazonaws.services.glue.AWSGlueClient;
 import com.amazonaws.services.glue.model.GetJobsRequest;
 import com.amazonaws.services.glue.model.GetJobsResult;
+import com.amazonaws.services.glue.model.ListJobsRequest;
+import com.amazonaws.services.glue.model.ListJobsResult;
 
 public class ListJobsRequestTester {
 
@@ -26,7 +28,7 @@ public class ListJobsRequestTester {
                 .build();
 
         //////////////////////////////////////////////
-        GetJobsRequest request = new GetJobsRequest();
+        ListJobsRequest request = new ListJobsRequest();
 
 //        List joblist = new ArrayList();
 //        Job job= new Job();
@@ -34,8 +36,8 @@ public class ListJobsRequestTester {
 //        joblist.add(job);
         request.setMaxResults(3);
 
-        GetJobsResult result=glue.getJobs(request);
-
+        ListJobsResult result=glue.listJobs(request);
+        System.out.println(result);
         //////////////////////////////////////////////
     }
 

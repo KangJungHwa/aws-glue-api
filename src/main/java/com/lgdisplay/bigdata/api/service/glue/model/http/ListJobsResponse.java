@@ -17,6 +17,5 @@ public class ListJobsResponse {
     List<String> jobNames;
 
     @JsonProperty("NextToken")
-    @JsonIgnoreProperties(ignoreUnknown = true)
     private String nextToken;
 }
