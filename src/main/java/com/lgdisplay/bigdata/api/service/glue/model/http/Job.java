@@ -70,5 +70,4 @@ public class Job {
 
     @JsonProperty("WorkerType")
     private String workerType;
-
 }

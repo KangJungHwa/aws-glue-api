@@ -14,5 +14,4 @@ public class GetJobRequest {
 
     @JsonProperty("JobName")
     private String jobName;
-
 }

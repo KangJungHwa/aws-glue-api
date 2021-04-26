@@ -14,5 +14,4 @@ import java.util.List;
 public class ConnectionsList {
 
     private List<String> connections;
-
 }

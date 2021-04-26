@@ -44,5 +44,4 @@ public class StartJobRunRequest {
 
     @JsonProperty("NumberOfWorkers")
     private Integer numberOfWorkers;
-
 }

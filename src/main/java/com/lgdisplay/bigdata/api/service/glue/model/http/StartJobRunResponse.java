@@ -14,5 +14,4 @@ public class StartJobRunResponse {
 
     @JsonProperty("JobRunId")
     private String jobRunId;
-
 }

@@ -12,6 +12,4 @@ import lombok.Setter;
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Health {
-
-
 }

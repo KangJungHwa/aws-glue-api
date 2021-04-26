@@ -16,5 +16,4 @@ public class BatchGetJobsRequest {
 
     @JsonProperty("JobNames")
     private List<String> jobNames;
-
 }

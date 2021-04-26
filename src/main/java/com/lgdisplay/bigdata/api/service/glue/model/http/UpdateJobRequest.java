@@ -14,7 +14,7 @@ public class UpdateJobRequest {
 
     @JsonProperty("JobName")
     private String jobName;
+
     @JsonProperty("JobUpdate")
     private JobUpdate jobUpdate;
-
 }

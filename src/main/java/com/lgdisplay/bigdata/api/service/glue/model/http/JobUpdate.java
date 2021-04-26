@@ -28,7 +28,6 @@ public class JobUpdate {
     @JsonProperty("ExecutionProperty")
     private ExecutionProperty executionProperty;
 
-
     @JsonProperty("DefaultArguments")
     private Map<String, String> defaultArguments;
 

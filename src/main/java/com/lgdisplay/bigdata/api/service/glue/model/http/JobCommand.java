@@ -20,5 +20,4 @@ public class JobCommand {
     @JsonProperty("PythonVersion")
     @JsonIgnoreProperties(ignoreUnknown = true)
     private String pythonVersion;
-
 }

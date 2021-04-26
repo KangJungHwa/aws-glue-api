@@ -12,5 +12,4 @@ public class CreateJobResponse {
 
     @JsonProperty("Name")
     private String name;
-
 }

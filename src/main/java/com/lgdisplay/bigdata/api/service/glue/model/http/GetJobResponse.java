@@ -14,5 +14,4 @@ public class GetJobResponse {
 
     @JsonProperty("Job")
     private Job job;
-
 }

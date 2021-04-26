@@ -14,5 +14,4 @@ public class NotificationProperty {
 
     @JsonProperty("NotifyDelayAfter")
     private Integer notifyDelayAfter;
-
 }

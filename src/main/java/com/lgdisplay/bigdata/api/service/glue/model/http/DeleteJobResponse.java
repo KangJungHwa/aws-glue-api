@@ -14,5 +14,4 @@ public class DeleteJobResponse {
 
     @JsonProperty("JobName")
     private String jobName;
-
 }
