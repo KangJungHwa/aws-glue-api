@@ -46,6 +46,11 @@ public class ListJobsRequestCommand extends GlueDefaultRequestCommand implements
             jobs = jobRepository.findAll();
         }
 
+        if (jobs == null) {
+            // EntityNotFoundException
+            return ResponseEntity.badRequest().build();
+        }
+
         context.startStopWatch("ListJobs 결과 반환");
 
         List<String> jobNames = new ArrayList();
