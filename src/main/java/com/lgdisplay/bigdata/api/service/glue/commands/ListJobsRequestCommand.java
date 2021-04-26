@@ -36,7 +36,7 @@ public class ListJobsRequestCommand extends GlueDefaultRequestCommand implements
         Integer maxResults = listJobsRequest.getMaxResults();
         String username = context.getUsername();
 
-        context.startStopWatch("모든 Job 조회");
+        context.startStopWatch("사용자의 모든 Job 조회");
 
         Iterable<Job> jobs = null;
         if (maxResults != null) {

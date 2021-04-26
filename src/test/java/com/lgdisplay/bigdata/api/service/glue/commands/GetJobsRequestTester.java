@@ -28,9 +28,10 @@ public class GetJobsRequestTester {
         //////////////////////////////////////////////
         GetJobsRequest request = new GetJobsRequest();
         request.setMaxResults(3);
-        GetJobsResult result=glue.getJobs(request);
+
+        GetJobsResult result = glue.getJobs(request);
         System.out.println(result);
-        for (int i = 0; i <result.getJobs().size() ; i++) {
+        for (int i = 0; i < result.getJobs().size(); i++) {
             System.out.println(result.getJobs().get(i).getName());
             System.out.println(result.getJobs().get(i).getCommand().getName());
             System.out.println(result.getJobs().get(i).getCommand().getScriptLocation());
