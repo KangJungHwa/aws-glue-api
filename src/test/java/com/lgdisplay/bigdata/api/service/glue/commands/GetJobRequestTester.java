@@ -27,7 +27,7 @@ public class GetJobRequestTester {
 
         //////////////////////////////////////////////////
         GetJobRequest request = new GetJobRequest();
-        request.setJobName("ExampleJob");
+        request.setJobName("sample5");
 
         GetJobResult result = glue.getJob(request);
 

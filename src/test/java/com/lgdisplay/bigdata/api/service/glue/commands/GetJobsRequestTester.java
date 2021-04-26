@@ -6,11 +6,10 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.glue.AWSGlue;
 import com.amazonaws.services.glue.AWSGlueClient;
-import com.amazonaws.services.glue.model.CreateJobRequest;
-import com.amazonaws.services.glue.model.CreateJobResult;
-import com.amazonaws.services.glue.model.JobCommand;
+import com.amazonaws.services.glue.model.GetJobsRequest;
+import com.amazonaws.services.glue.model.GetJobsResult;
 
-public class CreateJobRequestTester {
+public class GetJobsRequestTester {
 
     public static void main(String[] args) throws Exception {
         BasicAWSCredentials awsCreds = new BasicAWSCredentials("admin", "admin123");
@@ -26,18 +25,18 @@ public class CreateJobRequestTester {
                 .withEndpointConfiguration(configuration)
                 .build();
 
-        //////////////////////////////////////////////////
-        CreateJobRequest request = new CreateJobRequest();
-        JobCommand command = new JobCommand();
-        command.setName("test");
-        command.setPythonVersion("3.7.1");
-        command.setScriptLocation("s3:/test.py");
-        request.setCommand(command);
-        request.setName("sample");
-
-        CreateJobResult result = glue.createJob(request);
-
-        System.out.println(result.getName());
-        //////////////////////////////////////////////////
+        //////////////////////////////////////////////
+        GetJobsRequest request = new GetJobsRequest();
+        request.setMaxResults(3);
+        GetJobsResult result=glue.getJobs(request);
+        System.out.println(result);
+//        for (int i = 0; i <result.getJobs().size() ; i++) {
+//            //System.out.println(result.getJobs().get(i).getJobName());
+//            System.out.println(result.getJobs().get(i).getCommand().getScriptLocation());
+//            System.out.println(result.getJobs().get(i).getCommand().getPythonVersion());
+//        }
+        //////////////////////////////////////////////
     }
+
+
 }
