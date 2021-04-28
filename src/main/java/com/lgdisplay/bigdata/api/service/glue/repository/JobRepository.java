@@ -17,4 +17,6 @@ public interface JobRepository extends CrudRepository<Job, Long> {
     List<Job> findAllLimitN(@Param("username") String username, Pageable pageable);
 
     Optional<List<Job>> findJobsByUsername(String username);
+
+    List<Job> findByJobNameIn(List<String> jobname);
 }

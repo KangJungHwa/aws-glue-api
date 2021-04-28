@@ -50,7 +50,11 @@ public class BatchGetJobsRequestCommand extends GlueDefaultRequestCommand implem
 
 
         response.setJobs(resJobList);
-//        response.setJobsNotFound("");
+
+        //TODO
+        // request의 job 명과 조회결과와 비교해서
+        // 조회결과에 없는 job명을 setJobsNotFound에 넣어준다.
+        //response.setJobsNotFound("");
         context.startStopWatch("Job 조회");
         context.startStopWatch("BatchGetJob 결과 반환");
 
