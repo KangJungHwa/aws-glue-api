@@ -1,5 +1,28 @@
 # LG Display AWS Glue API Server
 
+## 개발 항목
+
+UpdateJob
+GetJob
+GetJobs
+DeleteJob
+ListJobs
+BatchGetJobs
+StartJobRun
+BatchStopJobRun
+GetJobRun
+GetJobRuns
+GetJobBookmarkAction
+GetJobBookmarksAction
+CreateTrigger
+StartTrigger
+GetTrigger
+GetTriggers
+UpdateTrigger
+StopTrigger
+DeleteTrigger
+ListTrigger
+
 ## Build
 
 ```
