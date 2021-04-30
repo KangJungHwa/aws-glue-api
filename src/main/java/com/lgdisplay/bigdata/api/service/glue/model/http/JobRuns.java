@@ -13,7 +13,7 @@ import java.util.Map;
 @Builder
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JobRun {
+public class JobRuns {
 
     @JsonProperty("AllocatedCapacity")
     private Integer allocatedCapacity;

@@ -7,7 +7,7 @@ import com.lgdisplay.bigdata.api.service.glue.model.Run;
 import com.lgdisplay.bigdata.api.service.glue.model.http.GetJobResponse;
 import com.lgdisplay.bigdata.api.service.glue.model.http.GetJobRunRequest;
 import com.lgdisplay.bigdata.api.service.glue.model.http.GetJobRunResponse;
-import com.lgdisplay.bigdata.api.service.glue.model.http.JobRun;
+import com.lgdisplay.bigdata.api.service.glue.model.http.JobRuns;
 import com.lgdisplay.bigdata.api.service.glue.repository.RunRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -37,9 +37,10 @@ public class GetJobRunRequestCommand extends GlueDefaultRequestCommand implement
     public ResponseEntity execute(RequestContext context) throws Exception {
         GetJobRunRequest getJobRunRequest = mapper.readValue(context.getBody(), GetJobRunRequest.class);
         String jobName = getJobRunRequest.getJobName();
+        String runId = getJobRunRequest.getRunId();
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~GetJobRun start~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         GetJobRunResponse response = GetJobRunResponse
-                .builder().jobRun(JobRun.builder().jobName(jobName).build())
+                .builder().jobRuns(JobRuns.builder().jobName(jobName).build())
                 .build();
 
         context.startStopWatch("Job Name 유효성 확인");
@@ -50,9 +51,9 @@ public class GetJobRunRequestCommand extends GlueDefaultRequestCommand implement
 
         context.startStopWatch("사용자의 Job Name 유효성 확인");
 
-        Optional<Run> byJobname = RunRepository.findByJobName(jobName);
+        Optional<Run> byJobNameAndJobRunId = RunRepository.findByJobNameAndJobRunId(jobName,runId);
 
-        if (!byJobname.isPresent()) {
+        if (!byJobNameAndJobRunId.isPresent()) {
             return ResponseEntity.status(400).body(response);
         }
 
@@ -60,14 +61,13 @@ public class GetJobRunRequestCommand extends GlueDefaultRequestCommand implement
 
         context.getLogging().setResourceName(jobName);
 
-        Run run = byJobname.get();
-        com.lgdisplay.bigdata.api.service.glue.model.http.JobRun finalResponseJobRun =
-                mapper.readValue(run.getBody(), com.lgdisplay.bigdata.api.service.glue.model.http.JobRun.class);
+        Run run = byJobNameAndJobRunId.get();
+        com.lgdisplay.bigdata.api.service.glue.model.http.JobRuns finalResponseJobRun =
+                mapper.readValue(run.getBody(), com.lgdisplay.bigdata.api.service.glue.model.http.JobRuns.class);
         finalResponseJobRun.setJobName(jobName);
         finalResponseJobRun.setId(run.getJobRunId());
         finalResponseJobRun.setJobRunState(run.getJobRunState());
-        response.setJobRun(finalResponseJobRun);
-
+        response.setJobRuns(finalResponseJobRun);
 
         context.startStopWatch("GetJobRun 결과 반환");
 

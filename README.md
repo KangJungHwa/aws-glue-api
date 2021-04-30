@@ -10,8 +10,8 @@ ListJobs - 완료
 BatchGetJobs - 완료
 StartJobRun - 완료
 BatchStopJobRun
-GetJobRun - 
-GetJobRuns
+GetJobRun - 완료
+GetJobRuns - 완료
 GetJobBookmarkAction
 GetJobBookmarksAction
 CreateTrigger

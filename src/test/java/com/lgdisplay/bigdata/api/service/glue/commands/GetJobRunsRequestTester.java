@@ -6,13 +6,12 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.glue.AWSGlue;
 import com.amazonaws.services.glue.AWSGlueClient;
-import com.amazonaws.services.glue.model.StartJobRunRequest;
-import com.amazonaws.services.glue.model.StartJobRunResult;
+import com.amazonaws.services.glue.model.GetJobRunRequest;
+import com.amazonaws.services.glue.model.GetJobRunResult;
+import com.amazonaws.services.glue.model.GetJobRunsRequest;
+import com.amazonaws.services.glue.model.GetJobRunsResult;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class StartJobRunRequestTester {
+public class GetJobRunsRequestTester {
 
     public static void main(String[] args) throws Exception {
         BasicAWSCredentials awsCreds = new BasicAWSCredentials("admin", "admin123");
@@ -29,16 +28,16 @@ public class StartJobRunRequestTester {
                 .build();
 
         //////////////////////////////////////////////////
-        StartJobRunRequest request = new StartJobRunRequest();
+        GetJobRunsRequest request = new GetJobRunsRequest();
         request.setJobName("sample");
-        Map<String, String> argMap = new HashMap<>();
-        argMap.put("first", "kang");
-        argMap.put("second", "jung");
-        argMap.put("third", "hwa");
-        request.setArguments(argMap);
-        StartJobRunResult result = glue.startJobRun(request);
+        GetJobRunsResult result = glue.getJobRuns(request);
+        System.out.println(result);
+        for (int i = 0; i < result.getJobRuns().size(); i++) {
+            System.out.println(result.getJobRuns().get(i).getJobName());
+            System.out.println(result.getJobRuns().get(i).getJobRunState());
+            System.out.println(result.getJobRuns().get(i).getId());
+        }
 
-        System.out.println(result.getJobRunId());
         //////////////////////////////////////////////////
     }
 
