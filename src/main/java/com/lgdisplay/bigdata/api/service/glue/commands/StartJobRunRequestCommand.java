@@ -3,10 +3,13 @@ package com.lgdisplay.bigdata.api.service.glue.commands;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lgdisplay.bigdata.api.service.glue.controller.RequestContext;
 import com.lgdisplay.bigdata.api.service.glue.model.Job;
+import com.lgdisplay.bigdata.api.service.glue.model.Run;
 import com.lgdisplay.bigdata.api.service.glue.model.http.StartJobRunRequest;
 import com.lgdisplay.bigdata.api.service.glue.model.http.StartJobRunResponse;
 import com.lgdisplay.bigdata.api.service.glue.repository.JobRepository;
+import com.lgdisplay.bigdata.api.service.glue.repository.RunRepository;
 import com.lgdisplay.bigdata.api.service.glue.service.ResourceService;
+import com.lgdisplay.bigdata.api.service.glue.util.MapUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,9 @@ public class StartJobRunRequestCommand extends GlueDefaultRequestCommand impleme
 
     @Autowired
     JobRepository jobRepository;
+
+    @Autowired
+    RunRepository runRepository;
 
     @Autowired
     ResourceService resourceService;
@@ -73,23 +79,20 @@ public class StartJobRunRequestCommand extends GlueDefaultRequestCommand impleme
         String jobSchedulerUrl = resourceService.getJobScheduler();
 
         HashMap params = new HashMap();
-        params.put("username", context.getUsername());
-        params.put("scriptLocation", byUsernameAndJobName.get().getScriptLocation());
-        params.put("scriptName", byUsernameAndJobName.get().getScriptName());
-        params.put("jobId", generatedJobRunId);
-        params.put("arguments", arguments);
+        params.put("jobRunId", generatedJobRunId);
+        params.put("arguments", MapUtils.mapToJson(arguments));
         params.put("jobName", jobName);
+        params.put("body", context.getBody());
 
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(jobSchedulerUrl, params, String.class);
         String schedulerJobId = responseEntity.getBody();
         context.getLogging().setSchedulerJobId(schedulerJobId);
         context.getLogging().setJobSchedulerUrl(jobSchedulerUrl);
-
         context.startStopWatch("StartJobRun 결과 반환");
-
         StartJobRunResponse successResponse = StartJobRunResponse.builder().jobRunId(generatedJobRunId).build();
         return ResponseEntity.ok(successResponse);
     }
+
 
     @Override
     public boolean authorize(RequestContext context) throws Exception {

@@ -46,5 +46,47 @@ public class MapUtils {
         map.put(key, value);
         return map;
     }
-
+    /**
+     * 지정한 map을 가지고 JsonString을 만든다.
+     *
+     * @param map   arguments가 들어있는 Map
+     * @return map을 json변환한 string
+     */
+    public static String mapToJson(Map<String,String> map) {
+        int i=0;
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        for (Map.Entry<String, String> element : map.entrySet()) {
+            i++;
+            if (map.size() == i) {
+                sb.append(elementToJson(element.getKey(), element.getValue(),true));
+            } else {
+                sb.append(elementToJson(element.getKey(), element.getValue(),false));
+            }
+        }
+        sb.append("}");
+        return sb.toString();
+    }
+    /**
+     * 지정한 map을 가지고 JsonString을 만든다.
+     *
+     * @param key   map의 각요소의 Key
+     * @param value   map의 각요소의 value
+     * @param isLast  마지막 요소인지 체크값
+     * @return map을 json변환한 string
+     */
+    private static String elementToJson(String key,String value, boolean isLast) {
+        StringBuilder elementSb = new StringBuilder();
+        elementSb.append("\"");
+        elementSb.append(key);
+        elementSb.append("\":");
+        elementSb.append("\"");
+        elementSb.append(value);
+        if (isLast) {
+            elementSb.append("\"");
+        }else{
+            elementSb.append("\",");
+        }
+        return elementSb.toString();
+    }
 }
