@@ -1,10 +1,9 @@
 package com.lgdisplay.bigdata.api.service.glue.model.http;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -12,8 +11,12 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ConnectionsList {
+public class UpdateTriggerRequest {
 
-    @JsonProperty("Connections")
-    private List<String> connections;
+    @JsonProperty("Name")
+    private String name;
+
+    @JsonProperty("TriggerUpdate")
+    private TriggerUpdate triggerUpdate;
+
 }

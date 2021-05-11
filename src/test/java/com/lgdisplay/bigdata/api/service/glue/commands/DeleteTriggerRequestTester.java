@@ -6,20 +6,17 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.glue.AWSGlue;
 import com.amazonaws.services.glue.AWSGlueClient;
-import com.amazonaws.services.glue.model.StartJobRunRequest;
-import com.amazonaws.services.glue.model.StartJobRunResult;
+import com.amazonaws.services.glue.model.DeleteJobRequest;
+import com.amazonaws.services.glue.model.DeleteJobResult;
+import com.amazonaws.services.glue.model.DeleteTriggerRequest;
+import com.amazonaws.services.glue.model.DeleteTriggerResult;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class StartJobRunRequestTester {
+public class DeleteTriggerRequestTester {
 
     public static void main(String[] args) throws Exception {
         BasicAWSCredentials awsCreds = new BasicAWSCredentials("admin", "admin123");
 
-        AwsClientBuilder.EndpointConfiguration configuration =
-                new AwsClientBuilder.
-                        EndpointConfiguration("http://localhost:8888/glue", "korea");
+        AwsClientBuilder.EndpointConfiguration configuration = new AwsClientBuilder.EndpointConfiguration("http://localhost:8888/glue", "korea");
 
         ClientConfiguration clientConfiguration = new ClientConfiguration();
         clientConfiguration.setMaxErrorRetry(0); // 0로 하지 않으면 여러번 호출한다.
@@ -31,16 +28,12 @@ public class StartJobRunRequestTester {
                 .build();
 
         //////////////////////////////////////////////////
-        StartJobRunRequest request = new StartJobRunRequest();
-        request.setJobName("sample");
-        Map<String, String> argMap = new HashMap<>();
-        argMap.put("first", "kang");
-        argMap.put("second", "jung");
-        argMap.put("third", "hwa");
-        request.setArguments(argMap);
-        StartJobRunResult result = glue.startJobRun(request);
+        DeleteTriggerRequest request = new DeleteTriggerRequest();
+        request.setName("trigger6");
 
-        System.out.println(result.getJobRunId());
+        DeleteTriggerResult result = glue.deleteTrigger(request);
+
+        System.out.println(result.getName());
         //////////////////////////////////////////////////
     }
 

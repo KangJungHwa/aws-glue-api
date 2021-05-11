@@ -4,16 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ConnectionsList {
+public class DeleteTriggerRequest {
 
-    @JsonProperty("Connections")
-    private List<String> connections;
+    @JsonProperty("Name")
+    private String name;
 }

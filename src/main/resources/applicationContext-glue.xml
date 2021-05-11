@@ -16,6 +16,9 @@
                 <bean class="com.lgdisplay.bigdata.api.service.glue.commands.BatchGetJobsRequestCommand"/>
                 <bean class="com.lgdisplay.bigdata.api.service.glue.commands.GetJobRunRequestCommand"/>
                 <bean class="com.lgdisplay.bigdata.api.service.glue.commands.GetJobRunsRequestCommand"/>
+                <bean class="com.lgdisplay.bigdata.api.service.glue.commands.CreateTriggerRequestCommand"/>
+                <bean class="com.lgdisplay.bigdata.api.service.glue.commands.DeleteTriggerRequestCommand"/>
+                <bean class="com.lgdisplay.bigdata.api.service.glue.commands.UpdateTriggerRequestCommand"/>
             </list>
         </property>
     </bean>

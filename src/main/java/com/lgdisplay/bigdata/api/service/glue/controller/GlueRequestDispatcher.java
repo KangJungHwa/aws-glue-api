@@ -47,7 +47,7 @@ public class GlueRequestDispatcher implements InitializingBean, ApplicationConte
     @Override
     public void afterPropertiesSet() throws Exception {
         if (commands == null) {
-            throw new IllegalArgumentException("S3 Command를 지정해 주십시오.");
+            throw new IllegalArgumentException("GLUE Command를 지정해 주십시오.");
         }
 
         // Spring이 초기화 되면 Command Key와 Command Impl의 매핑 정보를 생성한다.

@@ -1,4 +1,4 @@
-# LG Display AWS Glue API Server
+# LG Display AWS Glue API Server(192.168.21.55)
 
 ## 개발 항목
 
@@ -12,15 +12,13 @@ StartJobRun - 완료
 BatchStopJobRun
 GetJobRun - 완료
 GetJobRuns - 완료
-GetJobBookmarkAction
-GetJobBookmarksAction
-CreateTrigger
+CreateTrigger - 완료
 StartTrigger
 GetTrigger
 GetTriggers
 UpdateTrigger
 StopTrigger
-DeleteTrigger
+DeleteTrigger - 완료
 ListTrigger
 
 ## Build
