@@ -6,12 +6,11 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.glue.AWSGlue;
 import com.amazonaws.services.glue.AWSGlueClient;
-import com.amazonaws.services.glue.model.JobCommand;
-import com.amazonaws.services.glue.model.JobUpdate;
-import com.amazonaws.services.glue.model.UpdateJobRequest;
-import com.amazonaws.services.glue.model.UpdateJobResult;
+import com.amazonaws.services.glue.model.GetTriggerRequest;
+import com.amazonaws.services.glue.model.GetTriggerResult;
 
-public class UpdateJobRequestTester {
+
+public class GetTriggerRequestTester {
 
     public static void main(String[] args) throws Exception {
         BasicAWSCredentials awsCreds = new BasicAWSCredentials("admin", "admin123");
@@ -27,22 +26,15 @@ public class UpdateJobRequestTester {
                 .withEndpointConfiguration(configuration)
                 .build();
 
-        //////////////////////////////////////////////
-        UpdateJobRequest request = new UpdateJobRequest();
-        JobUpdate update = new JobUpdate();
-        JobCommand command = new JobCommand();
+        //////////////////////////////////////////////////
+        GetTriggerRequest request = new GetTriggerRequest();
+        request.setName("trigger9");
 
-        command.setName("test1~~~~");
-        command.setPythonVersion("3.7.1~~~~~");
-        command.setScriptLocation("s3:/test_update.pypypyt");
+        GetTriggerResult result = glue.getTrigger(request);
 
-        update.setCommand(command);
-        request.setJobName("sample");
-        request.setJobUpdate(update);
-
-        UpdateJobResult result = glue.updateJob(request);
-        System.out.println(result.getJobName());
-        //////////////////////////////////////////////
+        System.out.println(result);
+//        System.out.println(result.getTrigger().getActions());
+        //////////////////////////////////////////////////
     }
 
 }

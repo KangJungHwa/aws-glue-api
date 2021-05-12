@@ -56,13 +56,18 @@ public class UpdateJobRequestCommand extends GlueDefaultRequestCommand implement
 
         context.startStopWatch("Job 수정");
 
+        String body=context.getBody();
+        body=body.replace("JobName", "Name")
+                  .replace("\"JobUpdate\":{", "")
+                  .replace("}}}", "}}");
+
         Job updateJob = Job.builder()
                 .jobId(jobId)
                 .jobName(jobName)
                 .username(context.getUsername())
                 .scriptName(scriptName)
                 .scriptLocation(scriptLocation)
-                .body(context.getBody()).build();
+                .body(body).build();
         jobRepository.save(updateJob);
 
         context.startStopWatch("UpdateJob 결과 반환");

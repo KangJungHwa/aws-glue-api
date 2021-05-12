@@ -14,12 +14,12 @@ GetJobRun - 완료
 GetJobRuns - 완료
 CreateTrigger - 완료
 StartTrigger
-GetTrigger
-GetTriggers
-UpdateTrigger
+GetTrigger 진행중
+GetTriggers 진행중
+UpdateTrigger - 완료
 StopTrigger
 DeleteTrigger - 완료
-ListTrigger
+ListTriggers
 
 ## Build
 

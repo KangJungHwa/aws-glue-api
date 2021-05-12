@@ -19,6 +19,9 @@
                 <bean class="com.lgdisplay.bigdata.api.service.glue.commands.CreateTriggerRequestCommand"/>
                 <bean class="com.lgdisplay.bigdata.api.service.glue.commands.DeleteTriggerRequestCommand"/>
                 <bean class="com.lgdisplay.bigdata.api.service.glue.commands.UpdateTriggerRequestCommand"/>
+                <bean class="com.lgdisplay.bigdata.api.service.glue.commands.GetTriggerRequestCommand"/>
+                <bean class="com.lgdisplay.bigdata.api.service.glue.commands.GetTriggersRequestCommand"/>
+                <bean class="com.lgdisplay.bigdata.api.service.glue.commands.ListTriggersRequestCommand"/>
             </list>
         </property>
     </bean>

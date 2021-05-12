@@ -70,27 +70,22 @@ public class UpdateTriggerRequestCommand extends GlueDefaultRequestCommand imple
 
         context.startStopWatch("Job 수정");
 
+        String body=context.getBody();
+        body=body.replace("\"TriggerUpdate\":{\"Name\":\""+keyName+"\",", "")
+                .replace(",\"Predicate\":{}}}", "");
+        body=body+",\"StartOnCreation\":"+trigger.getStartOnCreate();
+        body=body+",\"WorkflowName\":\""+trigger.getWorkflowName()+"\"";
+        body=body+",\"Type\":\""+trigger.getType()+"\"";
+        body=body+"}";
         trigger.setTriggerId(trigger.getTriggerId());
         trigger.setName(updateName);
         trigger.setSchedule(schedule);
         trigger.setDescription(description);
         trigger.setActions(jsonStr);
-        trigger.setBody(context.getBody());
+        trigger.setBody(body);
 
         triggerRepository.save(trigger);
 
-//        Trigger updateTrigger = Trigger.builder()
-//                .triggerId(trigger.getTriggerId())
-//                .name(updateName)
-//                .schedule(schedule)
-//                .description(description)
-//                .actions(jsonStr)
-//                .description(description)
-//                .workflowName(trigger.getWorkflowName())
-//                .startOnCreate(trigger.getStartOnCreate())
-//                .type(trigger.getType())
-//                .body(context.getBody()).build();
-//        triggerRepository.save(updateTrigger);
 
         context.startStopWatch("UpdateJob 결과 반환");
 

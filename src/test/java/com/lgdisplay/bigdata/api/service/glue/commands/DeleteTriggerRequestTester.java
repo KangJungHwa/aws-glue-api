@@ -29,7 +29,7 @@ public class DeleteTriggerRequestTester {
 
         //////////////////////////////////////////////////
         DeleteTriggerRequest request = new DeleteTriggerRequest();
-        request.setName("trigger6");
+        request.setName("trigger1");
 
         DeleteTriggerResult result = glue.deleteTrigger(request);
 

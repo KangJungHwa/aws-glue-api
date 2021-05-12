@@ -33,7 +33,7 @@ public class CreateTriggerRequestTester {
         //////////////////////////////////////////////////
         CreateTriggerRequest request = new CreateTriggerRequest();
 
-        request.setName("trigger6");
+        request.setName("trigger9");
         request.setWorkflowName("WorkflowName1");
 
         List<Action> actionList = new ArrayList<>();

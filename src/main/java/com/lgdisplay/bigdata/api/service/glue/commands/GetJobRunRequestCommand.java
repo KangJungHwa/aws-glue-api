@@ -38,7 +38,6 @@ public class GetJobRunRequestCommand extends GlueDefaultRequestCommand implement
         GetJobRunRequest getJobRunRequest = mapper.readValue(context.getBody(), GetJobRunRequest.class);
         String jobName = getJobRunRequest.getJobName();
         String runId = getJobRunRequest.getRunId();
-        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~GetJobRun start~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         GetJobRunResponse response = GetJobRunResponse
                 .builder().jobRuns(JobRuns.builder().jobName(jobName).build())
                 .build();

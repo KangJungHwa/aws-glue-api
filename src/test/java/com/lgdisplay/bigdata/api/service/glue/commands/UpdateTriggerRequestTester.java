@@ -33,7 +33,7 @@ public class UpdateTriggerRequestTester {
         UpdateTriggerRequest request = new UpdateTriggerRequest();
         TriggerUpdate update = new TriggerUpdate();
 
-        request.setName("trigger6");
+        request.setName("trigger1");
 
         List<Action> actionList = new ArrayList<>();
 
@@ -60,7 +60,7 @@ public class UpdateTriggerRequestTester {
 
         update.setActions(actionList);
         update.setDescription("update test");
-        update.setName("update trigger name");
+        update.setName("trigger1");
         update.setSchedule("cron(10 * * * *)");
         Predicate predicate = new Predicate();
         update.setPredicate(predicate);
