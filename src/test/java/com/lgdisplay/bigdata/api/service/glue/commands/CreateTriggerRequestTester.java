@@ -69,7 +69,7 @@ public class CreateTriggerRequestTester {
 
         request.setDescription("test trigger");
         request.setStartOnCreation(true);
-        request.setName("TRIGGER5");
+        request.setName("TRIGGER");
         CreateTriggerResult result = glue.createTrigger(request);
         System.out.println(result.getName());
         //////////////////////////////////////////////////

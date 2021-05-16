@@ -10,12 +10,15 @@ import com.lgdisplay.bigdata.api.service.glue.model.http.DeleteTriggerRequest;
 import com.lgdisplay.bigdata.api.service.glue.model.http.DeleteTriggerResponse;
 import com.lgdisplay.bigdata.api.service.glue.repository.JobRepository;
 import com.lgdisplay.bigdata.api.service.glue.repository.TriggerRepository;
+import com.lgdisplay.bigdata.api.service.glue.service.ResourceService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 @Slf4j
@@ -28,6 +31,13 @@ public class DeleteTriggerRequestCommand extends GlueDefaultRequestCommand imple
     @Autowired
     TriggerRepository triggerRepository;
 
+    @Autowired
+    ResourceService resourceService;
+
+    @Autowired
+    RestTemplate restTemplate;
+
+
     @Override
     public String getName() {
         return "AWSGlue.DeleteTrigger";
@@ -36,6 +46,8 @@ public class DeleteTriggerRequestCommand extends GlueDefaultRequestCommand imple
     @Override
     public ResponseEntity execute(RequestContext context) throws Exception {
         DeleteTriggerRequest deleteTriggerRequest = mapper.readValue(context.getBody(), DeleteTriggerRequest.class);
+
+        String userName=context.getUsername();
         String name = deleteTriggerRequest.getName();
 
         DeleteTriggerResponse response = DeleteTriggerResponse.builder().name(name).build();
@@ -57,11 +69,14 @@ public class DeleteTriggerRequestCommand extends GlueDefaultRequestCommand imple
 
         context.getLogging().setResourceName(name);
 
-        Trigger trigger = Trigger.builder()
-                .triggerId(byName.get().getTriggerId())
-                .build();
+        String triggerUrl = resourceService.getTriggerUrl();
 
-        triggerRepository.delete(trigger);
+
+        String triggerId=byName.get().getTriggerId();
+        restTemplate.delete(triggerUrl+"/"+triggerId, triggerId);
+
+        context.getLogging().setJobSchedulerUrl(triggerUrl);
+
 
         context.startStopWatch("DeleteTrigger 결과 반환");
 

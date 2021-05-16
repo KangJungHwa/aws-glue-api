@@ -82,7 +82,7 @@ public class CreateTriggerRequestCommand extends GlueDefaultRequestCommand imple
         context.getLogging().setResourceName(name);
 
         // 별로 Primary Key를 관리하지만 기본은 username과 job name은 unique 해야 한다.
-        String triggerState= (start_on_creation) ? "STARTED":"STANDBY";
+        String triggerState= (start_on_creation) ? "RUNNING":"STANDBY";
         Trigger createTrigger = Trigger.builder()
                 .triggerId(String.valueOf(System.currentTimeMillis()))
                 .name(name)
