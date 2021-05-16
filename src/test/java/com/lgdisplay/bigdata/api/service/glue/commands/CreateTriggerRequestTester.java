@@ -33,28 +33,32 @@ public class CreateTriggerRequestTester {
         //////////////////////////////////////////////////
         CreateTriggerRequest request = new CreateTriggerRequest();
 
-        request.setName("trigger9");
-        request.setWorkflowName("WorkflowName1");
+        request.setWorkflowName("WorkflowName6");
 
         List<Action> actionList = new ArrayList<>();
-        request.setSchedule("cron(10 * * * *)");
+        request.setSchedule("0/3 * * * * ?");
+
         Action action = new Action();
-        Map<String, String> startOnCreate = new HashMap<>();
-        startOnCreate.put("startOnCreate1","1");
+        Map<String, String> argument1 = new HashMap<>();
+        argument1.put("DATE","2020-02-02");
+        argument1.put("TYPE","PYTHON");
         NotificationProperty notificationProperty = new NotificationProperty();
         notificationProperty.setNotifyDelayAfter(1*1000*5);
-        action.setArguments(startOnCreate);
-        action.setJobName("testJobName");
+        action.setArguments(argument1);
+        action.setJobName("PY_SAMPLE1");
         action.setNotificationProperty(notificationProperty);
 
 
         Action action2 = new Action();
-        Map<String, String> startOnCreate2 = new HashMap<>();
-        startOnCreate2.put("startOnCreate2","2");
+        Map<String, String> argument2 = new HashMap<>();
+
+        argument2.put("DATE2","2020-02-02");
+        argument2.put("TYPE2","PYTHON");
         NotificationProperty notificationProperty2 = new NotificationProperty();
         notificationProperty2.setNotifyDelayAfter(1*1000*5);
-        action2.setArguments(startOnCreate2);
-        action2.setJobName("testJobName2");
+
+        action2.setArguments(argument2);
+        action2.setJobName("PY_SAMPLE2");
         action2.setNotificationProperty(notificationProperty2);
 
 
@@ -62,8 +66,10 @@ public class CreateTriggerRequestTester {
         actionList.add(action2);
         request.setActions(actionList);
         request.setType("MatLap");
+
         request.setDescription("test trigger");
-        request.setStartOnCreation(false);
+        request.setStartOnCreation(true);
+        request.setName("TRIGGER5");
         CreateTriggerResult result = glue.createTrigger(request);
         System.out.println(result.getName());
         //////////////////////////////////////////////////

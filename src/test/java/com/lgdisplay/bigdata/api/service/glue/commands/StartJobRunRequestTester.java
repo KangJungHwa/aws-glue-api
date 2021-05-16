@@ -32,11 +32,11 @@ public class StartJobRunRequestTester {
 
         //////////////////////////////////////////////////
         StartJobRunRequest request = new StartJobRunRequest();
-        request.setJobName("sample");
+        request.setJobName("PY_SAMPLE");
         Map<String, String> argMap = new HashMap<>();
-        argMap.put("first", "kang");
-        argMap.put("second", "jung");
-        argMap.put("third", "hwa");
+        argMap.put("first1", "kang1");
+        argMap.put("second2", "jung2");
+        argMap.put("third3", "hwa3");
         request.setArguments(argMap);
         StartJobRunResult result = glue.startJobRun(request);
 

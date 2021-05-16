@@ -1,23 +1,30 @@
 # LG Display AWS Glue API Server(192.168.21.55)
 
-## 개발 항목
 
+#JOB 생성시 jobName 생성 규칙(대소문자 구별 않함.)
+R: R_
+Python : PY_
+MATRAP : MAT_
+
+
+## 개발 항목
+killJob - aws glue api에는 없는 항목인다.
 UpdateJob - 완료
 GetJob - 완료
 GetJobs - 완료
 DeleteJob - 완료
 ListJobs - 완료
-BatchGetJobs - 완료
-StartJobRun - 완료
+BatchGetJobs 리스트를 파라메터로 job 가져오기
+StartJobRun - 완료(job 생성과 즉시 실행하지만 스케줄은 생성되지 않음)
 BatchStopJobRun
 GetJobRun - 완료
 GetJobRuns - 완료
 CreateTrigger - 완료
-StartTrigger
+StartTrigger - 완료~~~~~~~~~~~~~~~~~~~
 GetTrigger 진행중
 GetTriggers 진행중
 UpdateTrigger - 완료
-StopTrigger
+StopTrigger 완료~~~~~~~~~~~~~~~~~~~
 DeleteTrigger - 완료
 ListTriggers
 

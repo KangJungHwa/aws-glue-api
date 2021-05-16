@@ -6,16 +6,20 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.glue.AWSGlue;
 import com.amazonaws.services.glue.AWSGlueClient;
-import com.amazonaws.services.glue.model.CreateJobRequest;
-import com.amazonaws.services.glue.model.CreateJobResult;
-import com.amazonaws.services.glue.model.JobCommand;
+import com.amazonaws.services.glue.model.*;
 
-public class CreateJobRequestTester {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class StartTriggerRequestTester {
 
     public static void main(String[] args) throws Exception {
         BasicAWSCredentials awsCreds = new BasicAWSCredentials("admin", "admin123");
 
-        AwsClientBuilder.EndpointConfiguration configuration = new AwsClientBuilder.EndpointConfiguration("http://localhost:8888/glue", "korea");
+        AwsClientBuilder.EndpointConfiguration configuration =
+                new AwsClientBuilder.EndpointConfiguration("http://localhost:8888/glue", "korea");
 
         ClientConfiguration clientConfiguration = new ClientConfiguration();
         clientConfiguration.setMaxErrorRetry(0); // 0로 하지 않으면 여러번 호출한다.
@@ -27,16 +31,11 @@ public class CreateJobRequestTester {
                 .build();
 
         //////////////////////////////////////////////////
-        CreateJobRequest request = new CreateJobRequest();
-        JobCommand command = new JobCommand();
-        command.setName("test_1");
-        command.setPythonVersion("3.7.1");
-        command.setScriptLocation("s3:/test_1.py");
-        request.setCommand(command);
-        request.setName("PY_SAMPLE4");
+        StartTriggerRequest request = new StartTriggerRequest();
 
-        CreateJobResult result = glue.createJob(request);
+        request.setName("TRIGGER5");
 
+        StartTriggerResult result = glue.startTrigger(request);
         System.out.println(result.getName());
         //////////////////////////////////////////////////
     }

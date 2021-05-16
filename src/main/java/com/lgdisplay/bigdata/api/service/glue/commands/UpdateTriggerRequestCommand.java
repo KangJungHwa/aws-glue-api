@@ -81,7 +81,6 @@ public class UpdateTriggerRequestCommand extends GlueDefaultRequestCommand imple
         trigger.setName(updateName);
         trigger.setSchedule(schedule);
         trigger.setDescription(description);
-        trigger.setActions(jsonStr);
         trigger.setBody(body);
 
         triggerRepository.save(trigger);

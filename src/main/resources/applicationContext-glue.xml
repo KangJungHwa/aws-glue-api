@@ -22,6 +22,8 @@
                 <bean class="com.lgdisplay.bigdata.api.service.glue.commands.GetTriggerRequestCommand"/>
                 <bean class="com.lgdisplay.bigdata.api.service.glue.commands.GetTriggersRequestCommand"/>
                 <bean class="com.lgdisplay.bigdata.api.service.glue.commands.ListTriggersRequestCommand"/>
+                <bean class="com.lgdisplay.bigdata.api.service.glue.commands.StartTriggerRequestCommand"/>
+                <bean class="com.lgdisplay.bigdata.api.service.glue.commands.StopTriggerRequestCommand"/>
             </list>
         </property>
     </bean>

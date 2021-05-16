@@ -45,8 +45,11 @@ public class StartJobRunRequestCommand extends GlueDefaultRequestCommand impleme
         return "AWSGlue.StartJobRun";
     }
 
+
     @Override
     public ResponseEntity execute(RequestContext context) throws Exception {
+
+
         StartJobRunRequest startJobRunRequest = mapper.readValue(context.getBody(), StartJobRunRequest.class);
         String jobName = startJobRunRequest.getJobName();
         String jobRunId = startJobRunRequest.getJobRunId(); // Retry시 사용
@@ -76,12 +79,13 @@ public class StartJobRunRequestCommand extends GlueDefaultRequestCommand impleme
         context.getLogging().setResourceName(jobName);
         context.getLogging().setJobRunId(generatedJobRunId);
 
-        String jobSchedulerUrl = resourceService.getJobScheduler();
+        String jobSchedulerUrl = resourceService.getJobStartUrl();
 
         HashMap params = new HashMap();
         params.put("jobRunId", generatedJobRunId);
         params.put("arguments", MapUtils.mapToJson(arguments));
         params.put("jobName", jobName);
+        params.put("userName", byUsernameAndJobName.get().getUsername());
         params.put("body", context.getBody());
 
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(jobSchedulerUrl, params, String.class);
