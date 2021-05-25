@@ -32,7 +32,7 @@ public class GetJobRequestCommand extends GlueDefaultRequestCommand implements G
     @Override
     public ResponseEntity execute(RequestContext context) throws Exception {
         GetJobRequest getJobRequest = mapper.readValue(context.getBody(), GetJobRequest.class);
-        String jobName = getJobRequest.getJobName();
+        String jobName = getJobRequest.getJobName().toUpperCase();
 
         GetJobResponse errorResponse = GetJobResponse
                 .builder()
@@ -47,7 +47,7 @@ public class GetJobRequestCommand extends GlueDefaultRequestCommand implements G
 
         context.startStopWatch("사용자의 Job Name 유효성 확인");
 
-        Optional<Job> byUsernameAndJobName = jobRepository.findByUsernameAndJobName(context.getUsername(), jobName);
+        Optional<Job> byUsernameAndJobName = jobRepository.findByJobName(jobName);
         if (!byUsernameAndJobName.isPresent()) {
             return ResponseEntity.status(400).body(errorResponse);
         }

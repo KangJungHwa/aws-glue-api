@@ -23,6 +23,7 @@ public class CreateJobRequest {
     @JsonProperty("LogUri")
     private String logUri;
 
+
     @JsonProperty("Role")
     private String role;
 

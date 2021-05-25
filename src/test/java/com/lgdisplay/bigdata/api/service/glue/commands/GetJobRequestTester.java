@@ -27,7 +27,7 @@ public class GetJobRequestTester {
 
         //////////////////////////////////////////////////
         GetJobRequest request = new GetJobRequest();
-        request.setJobName("sample5");
+        request.setJobName("PY_SAMPLE");
 
         GetJobResult result = glue.getJob(request);
 

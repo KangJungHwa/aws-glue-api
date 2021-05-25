@@ -36,8 +36,8 @@ public class GetJobRunRequestCommand extends GlueDefaultRequestCommand implement
     @Override
     public ResponseEntity execute(RequestContext context) throws Exception {
         GetJobRunRequest getJobRunRequest = mapper.readValue(context.getBody(), GetJobRunRequest.class);
-        String jobName = getJobRunRequest.getJobName();
-        String runId = getJobRunRequest.getRunId();
+        String jobName = getJobRunRequest.getJobName().toUpperCase();
+        String runId = getJobRunRequest.getRunId().toUpperCase();
         GetJobRunResponse response = GetJobRunResponse
                 .builder().jobRuns(JobRuns.builder().jobName(jobName).build())
                 .build();
@@ -61,13 +61,13 @@ public class GetJobRunRequestCommand extends GlueDefaultRequestCommand implement
         context.getLogging().setResourceName(jobName);
 
         Run run = byJobNameAndJobRunId.get();
-        com.lgdisplay.bigdata.api.service.glue.model.http.JobRuns finalResponseJobRun =
-                mapper.readValue(run.getBody(), com.lgdisplay.bigdata.api.service.glue.model.http.JobRuns.class);
-        finalResponseJobRun.setJobName(jobName);
-        finalResponseJobRun.setId(run.getJobRunId());
-        finalResponseJobRun.setJobRunState(run.getJobRunState());
-        response.setJobRuns(finalResponseJobRun);
 
+        JobRuns jobRuns = new JobRuns();
+        jobRuns.setJobName(jobName);
+        jobRuns.setId(runId);
+        jobRuns.setJobRunState(run.getJobRunState());
+        jobRuns.setId(run.getTriggerId());
+        response.setJobRuns(jobRuns);
         context.startStopWatch("GetJobRun 결과 반환");
 
         return ResponseEntity.ok(response);

@@ -33,7 +33,7 @@ public class StartTriggerRequestTester {
         //////////////////////////////////////////////////
         StartTriggerRequest request = new StartTriggerRequest();
 
-        request.setName("TRIGGER5");
+        request.setName("TRIGGER");
 
         StartTriggerResult result = glue.startTrigger(request);
         System.out.println(result.getName());

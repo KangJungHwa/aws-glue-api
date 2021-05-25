@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lgdisplay.bigdata.api.service.glue.controller.RequestContext;
 import com.lgdisplay.bigdata.api.service.glue.model.Job;
 import com.lgdisplay.bigdata.api.service.glue.model.Trigger;
+import com.lgdisplay.bigdata.api.service.glue.model.TriggerStateEnum;
 import com.lgdisplay.bigdata.api.service.glue.model.http.StartJobRunRequest;
 import com.lgdisplay.bigdata.api.service.glue.model.http.StartJobRunResponse;
 import com.lgdisplay.bigdata.api.service.glue.model.http.StartTriggerRequest;
@@ -70,7 +71,8 @@ public class StartTriggerRequestCommand extends GlueDefaultRequestCommand implem
             return ResponseEntity.status(400).body(response);
         }
         context.startStopWatch("사용자의 Trigger Name 시작 여부 확인");
-        if (byName.get().getTriggerState().equals("STARTED")) {
+        if (byName.get().getTriggerState() == TriggerStateEnum.RUNNING.name()
+             || byName.get().getTriggerState() == TriggerStateEnum.STARTED.name()) {
             log.error(byName.get().getName()+" :is  already started ");
             return ResponseEntity.status(400).body(response);
         }
@@ -79,7 +81,7 @@ public class StartTriggerRequestCommand extends GlueDefaultRequestCommand implem
 
         context.getLogging().setResourceName(name);
 
-        String triggerCreateUrl = resourceService.getTriggerUrl();
+        String triggerUrl = resourceService.getTriggerUrl();
 
         HashMap params = new HashMap();
 
@@ -88,10 +90,10 @@ public class StartTriggerRequestCommand extends GlueDefaultRequestCommand implem
         params.put("jobName", byName.get().getJobName().toUpperCase());
 
 
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity(triggerCreateUrl, params, String.class);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(triggerUrl, params, String.class);
         String schedulerTriggerId = responseEntity.getBody();
         context.getLogging().setSchedulerJobId(schedulerTriggerId);
-        context.getLogging().setJobSchedulerUrl(triggerCreateUrl);
+        context.getLogging().setJobSchedulerUrl(triggerUrl);
         context.startStopWatch("StartTrigger 결과 반환");
         StartTriggerResponse successResponse = StartTriggerResponse.builder().name(name).build();
         return ResponseEntity.ok(successResponse);

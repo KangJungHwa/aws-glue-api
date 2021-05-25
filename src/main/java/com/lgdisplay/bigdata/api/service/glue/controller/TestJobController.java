@@ -41,9 +41,7 @@ public class TestJobController extends DefaultController {
         Run startJobRun = Run.builder()
                 .jobRunId(jobRunId)
                 .jobName(startJobRunRequest.getJobName())
-                .arguments(params.get("arguments").toString())
-                .jobRunState("START")
-                .body(params.get("body").toString()).build();
+                .jobRunState("START").build();
         runRepository.save(startJobRun);
         //TODO
         // 아래에서 JOB 실행시키고 STATE 코드 RUNNING FINISH 업데이트 시키는 로직추가

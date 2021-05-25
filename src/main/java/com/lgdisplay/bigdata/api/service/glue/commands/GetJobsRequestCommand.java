@@ -35,7 +35,6 @@ public class GetJobsRequestCommand extends GlueDefaultRequestCommand implements 
     public ResponseEntity execute(RequestContext context) throws Exception {
         GetJobsRequest getJobRequest = mapper.readValue(context.getBody(), GetJobsRequest.class);
         Integer maxResults = getJobRequest.getMaxResults();
-        String username = context.getUsername();
 
         context.startStopWatch("사용자의 모든 Job 조회");
 
@@ -51,7 +50,7 @@ public class GetJobsRequestCommand extends GlueDefaultRequestCommand implements 
         Iterable<Job> jobs = null;
         if (maxResults != null) {
             PageRequest pageRequest = PageRequest.of(0, maxResults);
-            jobs = jobRepository.findAllLimitN(username, pageRequest);
+            jobs = jobRepository.findAllLimitN(pageRequest);
         } else {
             jobs = jobRepository.findAll();
         }

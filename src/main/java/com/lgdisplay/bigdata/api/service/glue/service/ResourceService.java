@@ -12,6 +12,8 @@ import java.util.List;
 @Service
 public class ResourceService {
 
+    //String schServer="http://192.168.20.205:8889";
+    String schServer="http://localhost:8889";
     @Value("${app.scheduler-urls}")
     List<String> jobSchedulers;
 
@@ -38,12 +40,12 @@ public class ResourceService {
 
 
     public String getJobStartUrl() {
-        return "http://localhost:8889/service/scheduler/start/job";
+        return schServer+"/service/scheduler/start/job";
     }
     public String getJobUrl() {
-        return "http://localhost:8889/service/scheduler/job";
+        return schServer+"/service/scheduler/job";
     }
     public String getTriggerUrl() {
-        return "http://localhost:8889/service/scheduler/trigger";
+        return schServer+"/service/scheduler/trigger";
     }
 }

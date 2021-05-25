@@ -28,7 +28,6 @@ public class ListJobsRequestTester {
         //////////////////////////////////////////////
         ListJobsRequest request = new ListJobsRequest();
         request.setMaxResults(2);
-
         ListJobsResult result = glue.listJobs(request);
         System.out.println(result);
         //////////////////////////////////////////////

@@ -70,10 +70,10 @@ public class GetJobRunsRequestCommand extends GlueDefaultRequestCommand implemen
 
         List<com.lgdisplay.bigdata.api.service.glue.model.http.JobRuns> selectedRuns = new ArrayList();
         for (com.lgdisplay.bigdata.api.service.glue.model.Run run : runs) {
-            JobRuns jobRuns = mapper.readValue(run.getBody(), com.lgdisplay.bigdata.api.service.glue.model.http.JobRuns.class);
-            jobRuns.setId(run.getJobRunId());
-            jobRuns.setJobRunState(run.getJobRunState());
-            selectedRuns.add(jobRuns);
+//            JobRuns jobRuns = mapper.readValue(run.getBody(), com.lgdisplay.bigdata.api.service.glue.model.http.JobRuns.class);
+//            jobRuns.setId(run.getJobRunId());
+//            jobRuns.setJobRunState(run.getJobRunState());
+//            selectedRuns.add(jobRuns);
         }
         JobRuns jr = selectedRuns.get(0);
         System.out.println("1------------"+ jr.getJobRunState());

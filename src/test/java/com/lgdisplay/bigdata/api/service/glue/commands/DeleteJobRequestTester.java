@@ -27,7 +27,7 @@ public class DeleteJobRequestTester {
 
         //////////////////////////////////////////////////
         DeleteJobRequest request = new DeleteJobRequest();
-        request.setJobName("");
+        request.setJobName("TRIGGER");
 
         DeleteJobResult result = glue.deleteJob(request);
 

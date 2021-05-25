@@ -29,9 +29,10 @@ public class GetJobRunRequestTester {
 
         //////////////////////////////////////////////////
         GetJobRunRequest request = new GetJobRunRequest();
-        request.setJobName("sample");
-        request.setRunId("JOB_1619765362663");
+        request.setJobName("PY_SAMPLE");
+        request.setRunId("JOB_1621502826167");
         GetJobRunResult result = glue.getJobRun(request);
+        System.out.println(result.toString());
         System.out.println(result.getJobRun().getId());
         System.out.println(result.getJobRun().getJobName());
         System.out.println(result.getJobRun().getJobRunState());

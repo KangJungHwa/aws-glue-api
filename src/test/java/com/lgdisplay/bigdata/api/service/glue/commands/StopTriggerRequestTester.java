@@ -31,7 +31,7 @@ public class StopTriggerRequestTester {
         //////////////////////////////////////////////////
         StopTriggerRequest request = new StopTriggerRequest();
 
-        request.setName("TRIGGER5");
+        request.setName("TRIGGER");
 
         StopTriggerResult result = glue.stopTrigger(request);
         System.out.println(result.getName());

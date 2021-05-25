@@ -8,7 +8,12 @@
 ### Request 정리
 
 * Name은 필수 (1~255 길이)
-
+* aws job 에는 스크립트 종류를 구별할 방법이 있어 명명 규칙이 필요함. 
+* 명명규칙 
+  * Python : PY_
+  * R : R_
+  * MATRAP : MAT_ 
+  
 ```json
 {
    "AllocatedCapacity": number,

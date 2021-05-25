@@ -17,7 +17,7 @@ import java.util.Map;
 public class CreateTriggerRequestTester {
 
     public static void main(String[] args) throws Exception {
-        BasicAWSCredentials awsCreds = new BasicAWSCredentials("admin", "admin123");
+        BasicAWSCredentials awsCreds = new BasicAWSCredentials("ADMIN", "admin123");
 
         AwsClientBuilder.EndpointConfiguration configuration = new AwsClientBuilder.EndpointConfiguration("http://localhost:8888/glue", "korea");
 
@@ -36,7 +36,6 @@ public class CreateTriggerRequestTester {
         request.setWorkflowName("WorkflowName6");
 
         List<Action> actionList = new ArrayList<>();
-        request.setSchedule("0/3 * * * * ?");
 
         Action action = new Action();
         Map<String, String> argument1 = new HashMap<>();
@@ -45,7 +44,7 @@ public class CreateTriggerRequestTester {
         NotificationProperty notificationProperty = new NotificationProperty();
         notificationProperty.setNotifyDelayAfter(1*1000*5);
         action.setArguments(argument1);
-        action.setJobName("PY_SAMPLE1");
+        action.setJobName("PY_PRINT");
         action.setNotificationProperty(notificationProperty);
 
 
@@ -58,17 +57,20 @@ public class CreateTriggerRequestTester {
         notificationProperty2.setNotifyDelayAfter(1*1000*5);
 
         action2.setArguments(argument2);
-        action2.setJobName("PY_SAMPLE2");
+        action2.setJobName("PY_PRINT1");
         action2.setNotificationProperty(notificationProperty2);
 
 
         actionList.add(action);
         actionList.add(action2);
         request.setActions(actionList);
-        request.setType("MatLap");
-
-        request.setDescription("test trigger");
+        request.setSchedule("0/3 * * * * ?");
+        request.setType("SCHEDULED");
         request.setStartOnCreation(true);
+//        request.setType("ON_DEMAND");
+//        request.setStartOnCreation(false);
+        request.setDescription("test trigger");
+
         request.setName("TRIGGER");
         CreateTriggerResult result = glue.createTrigger(request);
         System.out.println(result.getName());

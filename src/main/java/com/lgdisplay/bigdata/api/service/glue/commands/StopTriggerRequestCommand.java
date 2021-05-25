@@ -3,6 +3,7 @@ package com.lgdisplay.bigdata.api.service.glue.commands;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lgdisplay.bigdata.api.service.glue.controller.RequestContext;
 import com.lgdisplay.bigdata.api.service.glue.model.Trigger;
+import com.lgdisplay.bigdata.api.service.glue.model.TriggerStateEnum;
 import com.lgdisplay.bigdata.api.service.glue.model.http.StartTriggerRequest;
 import com.lgdisplay.bigdata.api.service.glue.model.http.StartTriggerResponse;
 import com.lgdisplay.bigdata.api.service.glue.model.http.StopTriggerRequest;
@@ -56,7 +57,7 @@ public class StopTriggerRequestCommand extends GlueDefaultRequestCommand impleme
             return ResponseEntity.status(400).body(response);
         }
 
-        context.startStopWatch("사용자의 Trigger Name 유효성 확인");
+        context.startStopWatch("사용자의 Trigger Name 존재여부 확인");
 
         Optional<Trigger> byName = triggerRepository.findByName(name);
         if (!byName.isPresent()) {
@@ -64,17 +65,24 @@ public class StopTriggerRequestCommand extends GlueDefaultRequestCommand impleme
             return ResponseEntity.status(400).body(response);
         }
 
-        context.startStopWatch("Trigger 실행 ");
+        context.startStopWatch("사용자의 Trigger  running 여부 확인");
+        if (!byName.get().getTriggerState().equals(TriggerStateEnum.RUNNING.name())) {
+            log.error(byName.get().getName()+" :is  not running ");
+            return ResponseEntity.status(400).body(response);
+        }
+
+
+        context.startStopWatch("Trigger 정지 실행 ");
 
         context.getLogging().setResourceName(name);
 
-        String triggerStopUrl = resourceService.getTriggerUrl();
+        String triggerUrl = resourceService.getTriggerUrl();
 
 
         Trigger trigger = byName.get();
-        restTemplate.delete(triggerStopUrl+"/"+trigger.getTriggerId(), trigger.getTriggerId());
+        restTemplate.put(triggerUrl+"/stop/"+trigger.getTriggerId(), trigger.getTriggerId());
 
-        context.getLogging().setJobSchedulerUrl(triggerStopUrl);
+        context.getLogging().setJobSchedulerUrl(triggerUrl);
         context.startStopWatch("Stoprigger 결과 반환");
         StopTriggerResponse successResponse = StopTriggerResponse.builder().name(name).build();
         return ResponseEntity.ok(successResponse);

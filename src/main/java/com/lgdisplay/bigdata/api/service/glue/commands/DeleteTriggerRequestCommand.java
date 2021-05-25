@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lgdisplay.bigdata.api.service.glue.controller.RequestContext;
 import com.lgdisplay.bigdata.api.service.glue.model.Job;
 import com.lgdisplay.bigdata.api.service.glue.model.Trigger;
+import com.lgdisplay.bigdata.api.service.glue.model.TriggerStateEnum;
 import com.lgdisplay.bigdata.api.service.glue.model.http.DeleteJobRequest;
 import com.lgdisplay.bigdata.api.service.glue.model.http.DeleteJobResponse;
 import com.lgdisplay.bigdata.api.service.glue.model.http.DeleteTriggerRequest;
@@ -47,8 +48,8 @@ public class DeleteTriggerRequestCommand extends GlueDefaultRequestCommand imple
     public ResponseEntity execute(RequestContext context) throws Exception {
         DeleteTriggerRequest deleteTriggerRequest = mapper.readValue(context.getBody(), DeleteTriggerRequest.class);
 
-        String userName=context.getUsername();
-        String name = deleteTriggerRequest.getName();
+        String userName=context.getUsername().toUpperCase();
+        String name = deleteTriggerRequest.getName().toUpperCase();
 
         DeleteTriggerResponse response = DeleteTriggerResponse.builder().name(name).build();
 
@@ -64,6 +65,13 @@ public class DeleteTriggerRequestCommand extends GlueDefaultRequestCommand imple
         if (!byName.isPresent()) {
             return ResponseEntity.status(400).body(response);
         }
+
+        context.startStopWatch("사용자의 Trigger  running 여부 확인");
+        if (byName.get().getTriggerState().equals(TriggerStateEnum.RUNNING.name())) {
+            log.error(byName.get().getName()+" :is running ");
+            return ResponseEntity.status(400).body(response);
+        }
+
 
         context.startStopWatch("Job 삭제");
 
