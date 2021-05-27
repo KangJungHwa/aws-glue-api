@@ -21,4 +21,26 @@ public interface JobRepository extends CrudRepository<Job, Long> {
     Optional<List<Job>> findJobsByUsername(String username);
 
     List<Job> findByJobNameIn(List<String> jobname);
+
+    @Query(value= "select COUNT(1) " +
+                  "  FROM " +
+                  "      (select JSONB_ARRAY_ELEMENTS(body::::jsonb->'Actions')->>'JobName' as job_name  " +
+                  "         from api_glue_trigger) A " +
+                  " where A.job_name = :jobName",
+            nativeQuery = true)
+    Integer findUsingJobCountNative(@Param("jobName") String jobName);
+
+    @Query(value= "select COUNT(1) from api_glue_job_run A where A.job_run_state ='RUNNING' and  A.job_name = :jobName",
+            nativeQuery = true)
+    Integer findRunningJobCountNative(@Param("jobName") String jobName);
+
+    @Query(value= "select COUNT(1) " +
+            "  FROM " +
+            "      (select JSONB_ARRAY_ELEMENTS(body::::jsonb->'Actions')->>'JobName' as job_name  " +
+            "         from api_glue_trigger where trigger_state='RUNNING') A " +
+            " where A.job_name = :jobName",
+            nativeQuery = true)
+    Integer findUsingJobRunningTriggerCountNative(@Param("jobName") String jobName);
+
+
 }

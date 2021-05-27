@@ -15,7 +15,7 @@ import java.util.Map;
 public class StartJobRunRequestTester {
 
     public static void main(String[] args) throws Exception {
-        BasicAWSCredentials awsCreds = new BasicAWSCredentials("admin", "admin123");
+        BasicAWSCredentials awsCreds = new BasicAWSCredentials("ADMIN", "admin123");
 
         AwsClientBuilder.EndpointConfiguration configuration =
                 new AwsClientBuilder.
@@ -32,7 +32,7 @@ public class StartJobRunRequestTester {
 
         //////////////////////////////////////////////////
         StartJobRunRequest request = new StartJobRunRequest();
-        request.setJobName("PY_SAMPLE");
+        request.setJobName("PY_PRINT");
         Map<String, String> argMap = new HashMap<>();
         argMap.put("first1", "kang1");
         argMap.put("second2", "jung2");

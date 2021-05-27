@@ -1,16 +1,12 @@
 # ListJobs
 
-Retrieves the names of all job resources in this AWS account, or the resources with the specified tag. This operation allows you to see which resources are available in your account, and their names.
-
-This operation takes the optional Tags field, which you can use as a filter on the response so that tagged resources can be retrieved as a group. If you choose to use tags filtering, only resources with the tag are retrieved.
-
 ## API Reference
 
 * https://docs.aws.amazon.com/glue/latest/webapi/API_ListJobs.html
-* https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/glue.html#Glue.Client.delete_job
+* https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/glue.html#Glue.Client.list_jobs
 
 ### Request 정리
-
+* 모든 사용자이 JOB을 조회할 수 있습니다.
 ```json
 {
   "MaxResults": number,
@@ -20,6 +16,57 @@ This operation takes the optional Tags field, which you can use as a filter on t
   }
 }
 ```
+
+
+Python 호출코드입니다.
+
+```python
+response = client.list_jobs(
+    MaxResults=3
+)
+```
+
+Java 호출 코드입니다.
+
+```java
+package com.lgdisplay.bigdata.api.service.glue.commands;
+
+import com.amazonaws.ClientConfiguration;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.client.builder.AwsClientBuilder;
+import com.amazonaws.services.glue.AWSGlue;
+import com.amazonaws.services.glue.AWSGlueClient;
+import com.amazonaws.services.glue.model.ListJobsRequest;
+import com.amazonaws.services.glue.model.ListJobsResult;
+
+public class ListJobsRequestTester {
+
+    public static void main(String[] args) throws Exception {
+        BasicAWSCredentials awsCreds = new BasicAWSCredentials("admin", "admin123");
+
+        AwsClientBuilder.EndpointConfiguration configuration = new AwsClientBuilder.EndpointConfiguration("http://localhost:8888/glue", "korea");
+
+        ClientConfiguration clientConfiguration = new ClientConfiguration();
+        clientConfiguration.setMaxErrorRetry(0); // 0로 하지 않으면 여러번 호출한다.
+
+        AWSGlue glue = AWSGlueClient.builder()
+                .withClientConfiguration(clientConfiguration)
+                .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
+                .withEndpointConfiguration(configuration)
+                .build();
+
+        //////////////////////////////////////////////
+        ListJobsRequest request = new ListJobsRequest();
+        request.setMaxResults(2);
+        ListJobsResult result = glue.listJobs(request);
+        System.out.println(result);
+        //////////////////////////////////////////////
+    }
+}
+
+```
+
 
 ## Response 정리
 

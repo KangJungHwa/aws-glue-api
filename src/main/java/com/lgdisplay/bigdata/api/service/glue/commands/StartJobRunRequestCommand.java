@@ -51,10 +51,10 @@ public class StartJobRunRequestCommand extends GlueDefaultRequestCommand impleme
 
 
         StartJobRunRequest startJobRunRequest = mapper.readValue(context.getBody(), StartJobRunRequest.class);
-        String jobName = startJobRunRequest.getJobName();
-        String jobRunId = startJobRunRequest.getJobRunId(); // Retry시 사용
-        Map<String, String> arguments = startJobRunRequest.getArguments();
+        String jobName = startJobRunRequest.getJobName().toUpperCase();
 
+        Map<String, String> arguments = startJobRunRequest.getArguments();
+        String userName=context.getUsername().toUpperCase();
         StartJobRunResponse errorResponse = StartJobRunResponse.builder().build();
 
         context.startStopWatch("Job Name 유효성 확인");
@@ -64,9 +64,9 @@ public class StartJobRunRequestCommand extends GlueDefaultRequestCommand impleme
             return ResponseEntity.status(400).body(errorResponse);
         }
 
-        context.startStopWatch("사용자의 Job Name 유효성 확인");
+        context.startStopWatch("Job Name 유효성 확인");
 
-        Optional<Job> byUsernameAndJobName = jobRepository.findByUsernameAndJobName(context.getUsername(), jobName);
+        Optional<Job> byUsernameAndJobName = jobRepository.findByJobName(jobName);
         if (!byUsernameAndJobName.isPresent()) {
             // EntityNotFoundException
             return ResponseEntity.status(400).body(errorResponse);
@@ -82,7 +82,6 @@ public class StartJobRunRequestCommand extends GlueDefaultRequestCommand impleme
         String jobSchedulerUrl = resourceService.getJobStartUrl();
 
         HashMap params = new HashMap();
-        params.put("jobRunId", generatedJobRunId);
         params.put("arguments", MapUtils.mapToJson(arguments));
         params.put("jobName", jobName);
         params.put("userName", byUsernameAndJobName.get().getUsername());

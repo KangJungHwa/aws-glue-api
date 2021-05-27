@@ -28,7 +28,7 @@ public class GetTriggerRequestTester {
 
         //////////////////////////////////////////////////
         GetTriggerRequest request = new GetTriggerRequest();
-        request.setName("trigger9");
+        request.setName("TRIGGER");
 
         GetTriggerResult result = glue.getTrigger(request);
 

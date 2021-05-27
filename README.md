@@ -8,7 +8,6 @@ MATRAP : MAT_
 
 
 ## 개발 항목
-killJob - aws glue api에는 없는 항목인다.
 UpdateJob - 완료
 GetJob - 완료
 GetJobs - 완료

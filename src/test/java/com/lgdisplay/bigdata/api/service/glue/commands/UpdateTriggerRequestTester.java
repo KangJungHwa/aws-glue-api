@@ -32,38 +32,24 @@ public class UpdateTriggerRequestTester {
         //////////////////////////////////////////////
         UpdateTriggerRequest request = new UpdateTriggerRequest();
         TriggerUpdate update = new TriggerUpdate();
-
-        request.setName("trigger1");
+        request.setName("TRIGGER");
 
         List<Action> actionList = new ArrayList<>();
 
         Action action = new Action();
         Map<String, String> updateMap = new HashMap<>();
-        updateMap.put("update_test","100");
-        NotificationProperty notificationProperty = new NotificationProperty();
-        notificationProperty.setNotifyDelayAfter(1*1000*9);
-        action.setArguments(updateMap);
-        action.setJobName("UpdateJobName");
-        action.setNotificationProperty(notificationProperty);
-
+        action.setJobName("PY_PRINT");
         Action action2 = new Action();
-        Map<String, String> startOnCreate2 = new HashMap<>();
-        startOnCreate2.put("update_test2","200");
-        NotificationProperty notificationProperty2 = new NotificationProperty();
-        notificationProperty2.setNotifyDelayAfter(1*1000*3);
-        action2.setArguments(startOnCreate2);
-        action2.setJobName("UpdateJobName2");
-        action2.setNotificationProperty(notificationProperty2);
+        action2.setJobName("PY_PRINT1");
 
         actionList.add(action);
         actionList.add(action2);
 
         update.setActions(actionList);
         update.setDescription("update test");
-        update.setName("trigger1");
-        update.setSchedule("cron(10 * * * *)");
-        Predicate predicate = new Predicate();
-        update.setPredicate(predicate);
+        update.setSchedule("0/45 * * * * ?");
+
+        update.setDescription("test trigger");
         request.setTriggerUpdate(update);
 
         UpdateTriggerResult result = glue.updateTrigger(request);

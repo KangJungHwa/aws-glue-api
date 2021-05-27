@@ -10,12 +10,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
 public class UpdateJobRequestCommand extends GlueDefaultRequestCommand implements GlueRequestCommand {
+
+    @Value("${glue.script-type-list}")
+    List scriptTypeList;
 
     @Autowired
     JobRepository jobRepository;
@@ -32,26 +37,43 @@ public class UpdateJobRequestCommand extends GlueDefaultRequestCommand implement
     @Override
     public ResponseEntity execute(RequestContext context) throws Exception {
         UpdateJobRequest JobRequest = mapper.readValue(context.getBody(), UpdateJobRequest.class);
-        String jobName = JobRequest.getJobName();
+        String jobName = JobRequest.getJobName().toUpperCase();
         String scriptName = JobRequest.getJobUpdate().getJobCommand().getName();
         String scriptLocation = JobRequest.getJobUpdate().getJobCommand().getScriptLocation();
-
+        String userName=context.getUsername().toUpperCase();
         UpdateJobResponse response = UpdateJobResponse.builder().jobName(jobName).build();
 
-        context.startStopWatch("Job Name 유효성 확인");
+        context.startStopWatch("JobName Parameter 유무 확인");
 
         if (StringUtils.isEmpty(jobName)) {
             return ResponseEntity.status(400).body(response);
         }
 
-        context.startStopWatch("사용자의 Job Name 유효성 확인");
-
-        Optional<Job> byUsernameAndJobName = jobRepository.findByUsernameAndJobName(context.getUsername(), jobName);
-        if (!byUsernameAndJobName.isPresent()) {
+        context.startStopWatch("scriptType의 유효성 확인");
+        if(!scriptTypeList.contains(JobRequest.getJobUpdate().getJobCommand().getName())){
             return ResponseEntity.status(400).body(response);
         }
 
-        Job job = byUsernameAndJobName.get();
+        context.startStopWatch("JobName 데이터의 유무 확인");
+
+        Optional<Job> optionalJob = jobRepository.findByUsernameAndJobName(userName, jobName);
+        if (!optionalJob.isPresent()) {
+            return ResponseEntity.status(400).body(response);
+        }
+        context.startStopWatch("JobName RUNNING 여부 확인");
+
+        Integer runningCnt = jobRepository.findRunningJobCountNative(jobName);
+
+        if (runningCnt>0) {
+            return ResponseEntity.status(400).body(response);
+        }
+
+        context.startStopWatch("JobName RUNNING 중인 트리거에서 사용 여부 확인");
+        Integer usingCnt = jobRepository.findUsingJobRunningTriggerCountNative(jobName);
+        if (usingCnt>0) {
+            return ResponseEntity.status(400).body(response);
+        }
+        Job job = optionalJob.get();
         Long jobId = job.getJobId();
 
         context.startStopWatch("Job 수정");
@@ -63,7 +85,6 @@ public class UpdateJobRequestCommand extends GlueDefaultRequestCommand implement
 
         Job updateJob = Job.builder()
                 .jobId(jobId)
-                .jobName(jobName)
                 .username(context.getUsername())
                 .scriptName(scriptName)
                 .scriptLocation(scriptLocation)

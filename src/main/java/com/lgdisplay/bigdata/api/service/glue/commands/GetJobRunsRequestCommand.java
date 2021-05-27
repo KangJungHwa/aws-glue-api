@@ -35,8 +35,8 @@ public class GetJobRunsRequestCommand extends GlueDefaultRequestCommand implemen
     public ResponseEntity execute(RequestContext context) throws Exception {
         GetJobRunsRequest getJobRunsRequest = mapper.readValue(context.getBody(), GetJobRunsRequest.class);
         Integer maxResults = getJobRunsRequest.getMaxResults();
-        String jobName = getJobRunsRequest.getJobName();
-
+        String jobName = getJobRunsRequest.getJobName().toUpperCase();
+        String userName=context.getUsername().toUpperCase();
         context.startStopWatch("사용자의 모든 Job Run 조회");
 
         GetJobRunsResponse response = new GetJobRunsResponse();
@@ -56,9 +56,9 @@ public class GetJobRunsRequestCommand extends GlueDefaultRequestCommand implemen
         Iterable<com.lgdisplay.bigdata.api.service.glue.model.Run> runs = null;
         if (maxResults != null) {
             PageRequest pageRequest = PageRequest.of(0, maxResults);
-            runs = runRepository.findAllLimitN(jobName, pageRequest);
+            runs = runRepository.findByUserNameAndJobNameLimitN(userName,jobName, pageRequest);
         } else {
-            runs = runRepository.findAll();
+            runs = runRepository.findByUserNameAndJobName(userName,jobName);
         }
 
         if (runs == null) {
@@ -67,19 +67,22 @@ public class GetJobRunsRequestCommand extends GlueDefaultRequestCommand implemen
         }
 
         context.startStopWatch("GetJobRuns 결과 반환");
-
+        List<JobRuns> jobRunList = new ArrayList<>();
         List<com.lgdisplay.bigdata.api.service.glue.model.http.JobRuns> selectedRuns = new ArrayList();
         for (com.lgdisplay.bigdata.api.service.glue.model.Run run : runs) {
-//            JobRuns jobRuns = mapper.readValue(run.getBody(), com.lgdisplay.bigdata.api.service.glue.model.http.JobRuns.class);
-//            jobRuns.setId(run.getJobRunId());
-//            jobRuns.setJobRunState(run.getJobRunState());
-//            selectedRuns.add(jobRuns);
+            JobRuns jobRuns=JobRuns.builder()
+                    .jobName(run.getJobName())
+                    .jobRunState(run.getJobRunState())
+                    .id(run.getJobRunId())
+                    .startedOn(Integer.parseInt(String.valueOf(run.getCreateDate().getTime()/1000)))
+                    .executionTime(Long.parseLong(String.valueOf(run.getCreateDate().getTime()-run.getCreateDate().getTime())))
+                    .completedOn(Integer.parseInt(String.valueOf(run.getUpdateDate().getTime()/1000)))
+                    .triggerName(run.getTriggerName())
+                    .build();
+            jobRunList.add(jobRuns);
         }
-        JobRuns jr = selectedRuns.get(0);
-        System.out.println("1------------"+ jr.getJobRunState());
-        response.setJobRuns(selectedRuns);
+        response.setJobRuns(jobRunList);
         response.setNextToken("");
-
 
         return ResponseEntity.ok(response);
     }

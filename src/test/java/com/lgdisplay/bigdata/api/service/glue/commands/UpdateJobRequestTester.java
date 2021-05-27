@@ -32,12 +32,12 @@ public class UpdateJobRequestTester {
         JobUpdate update = new JobUpdate();
         JobCommand command = new JobCommand();
 
-        command.setName("test1~~~~");
+        command.setName("PYTHON");
         command.setPythonVersion("3.7.1~~~~~");
-        command.setScriptLocation("s3:/test_update.pypypyt");
+        command.setScriptLocation("print_alphabet.py");
 
         update.setCommand(command);
-        request.setJobName("sample");
+        request.setJobName("PY_PRINT4");
         request.setJobUpdate(update);
 
         UpdateJobResult result = glue.updateJob(request);

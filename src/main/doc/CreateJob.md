@@ -6,14 +6,15 @@
 * https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/glue.html#Glue.Client.create_job
 
 ### Request 정리
-
 * Name은 필수 (1~255 길이)
-* aws job 에는 스크립트 종류를 구별할 방법이 있어 명명 규칙이 필요함. 
-* 명명규칙 
-  * Python : PY_
-  * R : R_
-  * MATRAP : MAT_ 
-  
+  * JobName은 Unique 해야 합니다.
+* Job 생성 시 사용자 Z drive를 공용 Storage로 copy 합니다.
+* Job의 Type(PYTHON,R, MATLAB) 구분은 Command tag의 Name을 가지고 구분합니다.
+  * job 생성시  Command의 Name에 PYTHON,R, MATLAB 외의 값을 입력하면 400 에러를 반환합니다. 
+* scriptLocation은 드라이브 식별자는 빼고 이하 경로로만 입력합니다.
+  * 아래와 같이 Z 드라이브 ROOT에 script가 있는 경우는 파일명만 입력합니다.
+  * ex) Z:/sample.py =>  sample.py
+
 ```json
 {
    "AllocatedCapacity": number,
@@ -78,6 +79,8 @@ response = client.start_job_run(
 Java 호출 코드입니다.
 
 ```java
+package com.lgdisplay.bigdata.api.service.glue.commands;
+
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -87,11 +90,6 @@ import com.amazonaws.services.glue.AWSGlueClient;
 import com.amazonaws.services.glue.model.CreateJobRequest;
 import com.amazonaws.services.glue.model.CreateJobResult;
 import com.amazonaws.services.glue.model.JobCommand;
-import com.amazonaws.services.identitymanagement.model.Tag;
-
-import java.util.ArrayListac;
-import java.util.Collection;
-import java.util.List;
 
 public class CreateJobRequestTester {
 
@@ -109,19 +107,23 @@ public class CreateJobRequestTester {
                 .withEndpointConfiguration(configuration)
                 .build();
 
+        //////////////////////////////////////////////////
         CreateJobRequest request = new CreateJobRequest();
         JobCommand command = new JobCommand();
-        command.setName("test");
+        //command.setName("print_number.py");
+        command.setName("PYTHON");
         command.setPythonVersion("3.7.1");
-        command.setScriptLocation("s3:/test.py");
+        command.setScriptLocation("print_alphpbet.py");
         request.setCommand(command);
-        request.setName("ExampleJob");
+        request.setName("PY_PRINT1");
 
         CreateJobResult result = glue.createJob(request);
 
         System.out.println(result.getName());
+        //////////////////////////////////////////////////
     }
 }
+
 ```
 
 ## Response 정리

@@ -61,16 +61,18 @@ public class CreateTriggerRequestCommand extends GlueDefaultRequestCommand imple
         String jobName=createTriggerRequest.getActions().get(0).getJobName().toUpperCase();
         CreateTriggerResponse response = CreateTriggerResponse.builder().name(name).build();
 
-        context.startStopWatch("Trigger 생성 파라메터 유효성 확인");
+        context.startStopWatch("Trigger Name null 여부 유효성 확인");
 
         //name, type은 필수 항목 이므로 반드시 필요하다.
         if (StringUtils.isEmpty(name)) {
             return ResponseEntity.status(400).body(response);
         }
+        context.startStopWatch("Trigger Type null 여부 유효성 확인");
         if(StringUtils.isEmpty(type)){
                 return ResponseEntity.status(400).body(response);
         }
 
+        context.startStopWatch("Trigger Type이 SCHEDULED인 경우 cron 표현식 유효성 확인");
         //type SCHEDULED 일때는 cron Expression이 있는지 검증을 한다.
         if(type.equals(TriggerTypeEnum.SCHEDULED.name())) {
             if (StringUtils.isEmpty(schedule)){
@@ -80,15 +82,17 @@ public class CreateTriggerRequestCommand extends GlueDefaultRequestCommand imple
         //ON_DEMAND 일때는 startOnCreation이 true 일수 없다.
         //ON_DEMAND 일때는 스케줄을 입력할 수 없다.
         if(type.equals(TriggerTypeEnum.ON_DEMAND.name())) {
+            context.startStopWatch("Trigger Type이 ON_DEMAND인 경우 start_on_creation 값 유효성 확인");
             if (start_on_creation){
                 return ResponseEntity.status(400).body(response);
             }
+            context.startStopWatch("Trigger Type이 ON_DEMAND인 경우 cron 표현식 null이 아닌 경우 확인");
             if(!StringUtils.isEmpty(schedule)){
                 return ResponseEntity.status(400).body(response);
             }
         }
         //trigger Action에 있는 job은 job 테이블에 모두 존재 해야 한다.
-        context.startStopWatch("사용자의 Job Name 유효성 확인");
+        context.startStopWatch("Trigger에 포함된 Job Name이 Job 테이블에 존재하는지 유효성 확인");
         for (Action action:createTriggerRequest.getActions()) {
             jobNames.add(action.getJobName());
         }

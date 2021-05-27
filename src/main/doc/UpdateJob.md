@@ -8,7 +8,10 @@
 ### Request 정리
 
 * JobName 필수 (1~255 길이)
-
+  * JobName 필수로 제공 해야 합니다.
+  * JobRun 테이블에 Running 중인 job은 수정 할 수 없습니다.
+  * Trigger에서 사용 중인 Job중 running job은 수정 할 수 없습니다.
+  * * job 수정시  Command의 Name에 PYTHON,R, MATLAB 외의 값을 입력하면 400 에러를 반환합니다. 
 ```json
 {
   "JobName": "string"

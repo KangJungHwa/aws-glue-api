@@ -29,15 +29,12 @@ public class CreateJobRequestTester {
         //////////////////////////////////////////////////
         CreateJobRequest request = new CreateJobRequest();
         JobCommand command = new JobCommand();
-        //command.setName("print_number.py");
-        command.setName("print_alphpbet.py");
+        command.setName("PYTHON");
         command.setPythonVersion("3.7.1");
-        command.setScriptLocation("/pacino72/Documents/");
+        command.setScriptLocation("print_number.py");
         request.setCommand(command);
-        request.setName("PY_PRINT1");
-
+        request.setName("PY_PRINT9");
         CreateJobResult result = glue.createJob(request);
-
         System.out.println(result.getName());
         //////////////////////////////////////////////////
     }

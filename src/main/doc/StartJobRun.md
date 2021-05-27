@@ -8,8 +8,8 @@
 ### Request 정리
 
 * JobName (필수)
-* JobRunId 재실행을 위한 ID (옵션)
 * Arguments 인자 (옵션)
+* 모든 사용자이 JOB을 수행할 수 있습니다.
 
 ```javascript
 {

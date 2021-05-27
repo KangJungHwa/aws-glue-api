@@ -36,22 +36,22 @@ public class ListTriggersRequestCommand extends GlueDefaultRequestCommand implem
 
     @Override
     public ResponseEntity execute(RequestContext context) throws Exception {
-        ListTriggersRequest listTriggersRequest = mapper.readValue(context.getBody(), ListTriggersRequest.class);
-        Integer maxResults = listTriggersRequest.getMaxResults();
-
+        ListTriggersRequest request = mapper.readValue(context.getBody(), ListTriggersRequest.class);
+        Integer maxResults = request.getMaxResults();
+        String userName=context.getUsername().toUpperCase();
         context.startStopWatch("사용자의 모든 Trigger 조회");
-//        List<String> triggerNames=triggerRepository.findListAllTriggers();
+
         List<String> triggerNames= null;
         PageRequest pageRequest = PageRequest.of(0, maxResults);
         if (maxResults != null) {
-            if (listTriggersRequest.getDependentJobName() != null) {
-                triggerNames = triggerRepository.findListTriggersLimitN(listTriggersRequest.getDependentJobName(), pageRequest);
+            if (request.getDependentJobName() != null) {
+                triggerNames = triggerRepository.findTriggerByDependentJobLimitNNative(userName, request.getDependentJobName(), pageRequest);
             }else {
                 triggerNames = triggerRepository.findListAllTriggersLimitN(pageRequest);
             }
         }else {
-            if (listTriggersRequest.getDependentJobName() != null) {
-                triggerNames = triggerRepository.findListTriggers(listTriggersRequest.getDependentJobName());
+            if (request.getDependentJobName() != null) {
+                triggerNames = triggerRepository.findTriggerByDependentJobNative(userName,request.getDependentJobName());
             }else{
                 triggerNames = triggerRepository.findListAllTriggers();
             }
@@ -64,7 +64,11 @@ public class ListTriggersRequestCommand extends GlueDefaultRequestCommand implem
 
         context.startStopWatch("ListTriggers 결과 반환");
 
-        ListTriggersResponse response = ListTriggersResponse.builder().triggerNames(triggerNames).build();
+        ListTriggersResponse response =
+                ListTriggersResponse.builder()
+                        .triggerNames(triggerNames)
+                        .nextToken("")
+                        .build();
         return ResponseEntity.ok(response);
     }
 

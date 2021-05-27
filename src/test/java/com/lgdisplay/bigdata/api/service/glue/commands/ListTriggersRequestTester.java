@@ -31,7 +31,7 @@ public class ListTriggersRequestTester {
         //////////////////////////////////////////////
         ListTriggersRequest request = new ListTriggersRequest();
         request.setMaxResults(2);
-        request.setDependentJobName("trigger9");
+        request.setDependentJobName("PY_PRINT");
 
         ListTriggersResult result = glue.listTriggers(request);
         System.out.println(result);

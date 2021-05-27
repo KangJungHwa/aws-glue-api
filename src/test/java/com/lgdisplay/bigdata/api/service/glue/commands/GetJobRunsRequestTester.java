@@ -29,7 +29,8 @@ public class GetJobRunsRequestTester {
 
         //////////////////////////////////////////////////
         GetJobRunsRequest request = new GetJobRunsRequest();
-        request.setJobName("sample");
+        request.setJobName("PY_PRINT");
+        request.setMaxResults(20);
         GetJobRunsResult result = glue.getJobRuns(request);
         System.out.println(result);
         for (int i = 0; i < result.getJobRuns().size(); i++) {

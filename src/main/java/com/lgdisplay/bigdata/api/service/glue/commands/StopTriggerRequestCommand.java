@@ -47,7 +47,7 @@ public class StopTriggerRequestCommand extends GlueDefaultRequestCommand impleme
         StopTriggerRequest stopJobRunRequest = mapper.readValue(context.getBody(), StopTriggerRequest.class);
 
         String name = stopJobRunRequest.getName();
-
+        String userName = context.getUsername().toUpperCase();
         StopTriggerResponse response = StopTriggerResponse.builder().build();
 
         context.startStopWatch("Trigger Name 유효성 확인");
@@ -59,15 +59,16 @@ public class StopTriggerRequestCommand extends GlueDefaultRequestCommand impleme
 
         context.startStopWatch("사용자의 Trigger Name 존재여부 확인");
 
-        Optional<Trigger> byName = triggerRepository.findByName(name);
-        if (!byName.isPresent()) {
+        Optional<Trigger> optionalTrigger = triggerRepository.findByUserNameAndName(userName,name);
+        Trigger trigger = optionalTrigger.get();
+        if (!optionalTrigger.isPresent()) {
             // EntityNotFoundException
             return ResponseEntity.status(400).body(response);
         }
 
         context.startStopWatch("사용자의 Trigger  running 여부 확인");
-        if (!byName.get().getTriggerState().equals(TriggerStateEnum.RUNNING.name())) {
-            log.error(byName.get().getName()+" :is  not running ");
+        if (!trigger.getTriggerState().equals(TriggerStateEnum.RUNNING.name())) {
+            log.error(trigger.getName()+" :is  not running ");
             return ResponseEntity.status(400).body(response);
         }
 
@@ -79,7 +80,7 @@ public class StopTriggerRequestCommand extends GlueDefaultRequestCommand impleme
         String triggerUrl = resourceService.getTriggerUrl();
 
 
-        Trigger trigger = byName.get();
+
         restTemplate.put(triggerUrl+"/stop/"+trigger.getTriggerId(), trigger.getTriggerId());
 
         context.getLogging().setJobSchedulerUrl(triggerUrl);

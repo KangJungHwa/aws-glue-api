@@ -38,35 +38,17 @@ public class CreateTriggerRequestTester {
         List<Action> actionList = new ArrayList<>();
 
         Action action = new Action();
-        Map<String, String> argument1 = new HashMap<>();
-        argument1.put("DATE","2020-02-02");
-        argument1.put("TYPE","PYTHON");
-        NotificationProperty notificationProperty = new NotificationProperty();
-        notificationProperty.setNotifyDelayAfter(1*1000*5);
-        action.setArguments(argument1);
         action.setJobName("PY_PRINT");
-        action.setNotificationProperty(notificationProperty);
-
 
         Action action2 = new Action();
-        Map<String, String> argument2 = new HashMap<>();
-
-        argument2.put("DATE2","2020-02-02");
-        argument2.put("TYPE2","PYTHON");
-        NotificationProperty notificationProperty2 = new NotificationProperty();
-        notificationProperty2.setNotifyDelayAfter(1*1000*5);
-
-        action2.setArguments(argument2);
         action2.setJobName("PY_PRINT1");
-        action2.setNotificationProperty(notificationProperty2);
-
 
         actionList.add(action);
         actionList.add(action2);
         request.setActions(actionList);
-        request.setSchedule("0/3 * * * * ?");
+        request.setSchedule("0/10 * * * * ?");
         request.setType("SCHEDULED");
-        request.setStartOnCreation(true);
+        request.setStartOnCreation(false);
 //        request.setType("ON_DEMAND");
 //        request.setStartOnCreation(false);
         request.setDescription("test trigger");

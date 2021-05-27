@@ -61,14 +61,14 @@ public class DeleteTriggerRequestCommand extends GlueDefaultRequestCommand imple
 
         context.startStopWatch("사용자의 Trigger Name 유효성 확인");
 
-        Optional<Trigger> byName = triggerRepository.findByName(name);
-        if (!byName.isPresent()) {
+        Optional<Trigger> optionalTrigger = triggerRepository.findByUserNameAndName(userName,name);
+        if (!optionalTrigger.isPresent()) {
             return ResponseEntity.status(400).body(response);
         }
 
         context.startStopWatch("사용자의 Trigger  running 여부 확인");
-        if (byName.get().getTriggerState().equals(TriggerStateEnum.RUNNING.name())) {
-            log.error(byName.get().getName()+" :is running ");
+        if (optionalTrigger.get().getTriggerState().equals(TriggerStateEnum.RUNNING.name())) {
+            log.error(optionalTrigger.get().getName()+" :is running ");
             return ResponseEntity.status(400).body(response);
         }
 
@@ -80,7 +80,7 @@ public class DeleteTriggerRequestCommand extends GlueDefaultRequestCommand imple
         String triggerUrl = resourceService.getTriggerUrl();
 
 
-        String triggerId=byName.get().getTriggerId();
+        String triggerId=optionalTrigger.get().getTriggerId();
         restTemplate.delete(triggerUrl+"/"+triggerId, triggerId);
 
         context.getLogging().setJobSchedulerUrl(triggerUrl);

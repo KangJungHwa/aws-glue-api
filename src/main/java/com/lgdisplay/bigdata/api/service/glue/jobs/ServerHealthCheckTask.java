@@ -49,7 +49,7 @@ public class ServerHealthCheckTask {
                 .build();
         resourceService.setApiServerHealth(serverHealth);
 
-        log.debug("{}", serverHealth);
+       // log.debug("{}", serverHealth);
 
         this.prevTicks = cpu.getSystemCpuLoadTicks();
     }

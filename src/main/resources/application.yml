@@ -78,7 +78,7 @@ server:
 app:
   region-name: korea
   iam-url: http://localhost:9999/iam
-  scheduler-urls: http://192.168.1.1:8888/glue/scheduler/status, http://192.168.1.2:8888/glue/scheduler/status, http://192.168.1.3:8888/glue/scheduler/status
+  scheduler-urls: http://192.168.1.1:8889/glue/scheduler/status, http://192.168.1.2:8889/glue/scheduler/status, http://192.168.1.3:8889/glue/scheduler/status
   service-context-paths:
     glue: /glue
 
@@ -91,4 +91,10 @@ logging:
   #config: c:\\app\logback-prod.xml
   config: /data/apps/glue/logback-prod.xml
 
+#######################
+## internal variable
+#######################
+
+glue:
+  script-type-list: PYTHON,R,MATLAB
 

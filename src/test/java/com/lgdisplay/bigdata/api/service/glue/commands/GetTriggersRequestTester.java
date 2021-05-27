@@ -28,7 +28,7 @@ public class GetTriggersRequestTester {
         //////////////////////////////////////////////
         GetTriggersRequest request = new GetTriggersRequest();
         request.setMaxResults(3);
-        request.setDependentJobName("trigger9");
+        request.setDependentJobName("PY_PRINT3");
 
         GetTriggersResult result = glue.getTriggers(request);
         System.out.println(result);

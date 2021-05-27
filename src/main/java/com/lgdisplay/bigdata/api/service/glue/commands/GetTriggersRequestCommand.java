@@ -54,9 +54,10 @@ public class GetTriggersRequestCommand extends GlueDefaultRequestCommand impleme
             }
         }else {
             if (getTriggersRequest.getDependentJobName() != null) {
-                triggers = triggerRepository.findAll();
-            }else{
                 triggers = triggerRepository.findListByName(getTriggersRequest.getDependentJobName());
+
+            }else{
+                triggers = triggerRepository.findAll();
             }
         }
 

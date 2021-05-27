@@ -1,6 +1,7 @@
 package com.lgdisplay.bigdata.api.service.glue.commands;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lgdisplay.bigdata.api.service.glue.config.ServierStatusConfiguration;
 import com.lgdisplay.bigdata.api.service.glue.controller.RequestContext;
 import com.lgdisplay.bigdata.api.service.glue.model.Job;
 import com.lgdisplay.bigdata.api.service.glue.model.http.CreateJobRequest;
@@ -13,14 +14,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
 public class CreateJobRequestCommand extends GlueDefaultRequestCommand implements GlueRequestCommand {
+
+    @Value("${glue.script-type-list}")
+    List scriptTypeList;
 
     @Autowired
     @Qualifier("mapper")
@@ -40,6 +46,9 @@ public class CreateJobRequestCommand extends GlueDefaultRequestCommand implement
         return "AWSGlue.CreateJob";
     }
 
+    @Autowired
+    ServierStatusConfiguration servierStatusConfiguration;
+
     @Override
     public ResponseEntity execute(RequestContext context) throws Exception {
         CreateJobRequest createJobRequest = mapper.readValue(context.getBody(), CreateJobRequest.class);
@@ -47,19 +56,27 @@ public class CreateJobRequestCommand extends GlueDefaultRequestCommand implement
         String jobName = createJobRequest.getName().toUpperCase();
         String scriptName = createJobRequest.getCommand().getName();
         String scriptLocation = createJobRequest.getCommand().getScriptLocation();
+        servierStatusConfiguration.ServerStatusMap().put("Hello", "test~~~~~~~~~~~");
 
+        String str=servierStatusConfiguration.ServerStatusMap().get("Hello");
+        log.info("~~~~~~~~~~~~~~~~~~~~~~~str~~~~~~~~~~~~~~~~~~~~~~"+str);
         CreateJobResponse response = CreateJobResponse.builder().name(jobName).build();
 
-        context.startStopWatch("Job Name 유효성 확인");
+        context.startStopWatch("사용자의 Job Name NULL 여부 유효성 확인");
 
         if (StringUtils.isEmpty(jobName)) {
             return ResponseEntity.status(400).body(response);
         }
 
-        context.startStopWatch("사용자의 Job Name 유효성 확인");
+        context.startStopWatch("scriptType의 유효성 확인");
+        if(!scriptTypeList.contains(createJobRequest.getCommand().getName())){
+            return ResponseEntity.status(400).body(response);
+        }
 
-        Optional<Job> byUsernameAndJobName = jobRepository.findByUsernameAndJobName(context.getUsername(), jobName);
-        if (byUsernameAndJobName.isPresent()) {
+        context.startStopWatch("Job Name Unique 유효성 확인");
+
+        Optional<Job> optionalJob = jobRepository.findByJobName(jobName);
+        if (optionalJob.isPresent()) {
             return ResponseEntity.status(400).body(response);
         }
 

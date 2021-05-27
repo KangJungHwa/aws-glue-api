@@ -27,7 +27,7 @@ public class DeleteJobRequestTester {
 
         //////////////////////////////////////////////////
         DeleteJobRequest request = new DeleteJobRequest();
-        request.setJobName("TRIGGER");
+        request.setJobName("PY_PRINT");
 
         DeleteJobResult result = glue.deleteJob(request);
 

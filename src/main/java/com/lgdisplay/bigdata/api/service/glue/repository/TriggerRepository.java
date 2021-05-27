@@ -36,4 +36,25 @@ public interface TriggerRepository extends JpaRepository<Trigger, String> {
 
     @Query("FROM com.lgdisplay.bigdata.api.service.glue.model.Trigger t ")
     List<Trigger> findAllLimitN(Pageable pageable);
+
+    @Query(value= "SELECT B.name " +
+                  "  FROM  " +
+                  "      (select JSONB_ARRAY_ELEMENTS(body::::jsonb->'Actions')->>'JobName' as job_name, NAME  " +
+                  "         from api_glue_trigger) A, api_glue_trigger B " +
+                  " where A.job_name =:jobName " +
+                  "   and A.name=B.name" +
+                  "   AND B.user_name =:userName ",
+            nativeQuery = true)
+    List<String> findTriggerByDependentJobLimitNNative(@Param("userName") String userName, @Param("jobName") String jobName, Pageable pageable);
+
+
+    @Query(value= "SELECT B.name " +
+            "  FROM  " +
+            "      (select JSONB_ARRAY_ELEMENTS(body::::jsonb->'Actions')->>'JobName' as job_name, NAME  " +
+            "         from api_glue_trigger) A, api_glue_trigger B " +
+            " where A.job_name =:jobName " +
+            "   and A.name=B.name" +
+            "   AND B.user_name =:userName ",
+            nativeQuery = true)
+    List<String> findTriggerByDependentJobNative(@Param("userName") String userName, @Param("jobName") String jobName);
 }

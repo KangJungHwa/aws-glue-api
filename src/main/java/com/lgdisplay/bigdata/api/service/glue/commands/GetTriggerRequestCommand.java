@@ -32,8 +32,8 @@ public class GetTriggerRequestCommand extends GlueDefaultRequestCommand implemen
 
     @Override
     public ResponseEntity execute(RequestContext context) throws Exception {
-        GetTriggerRequest getJobRequest = mapper.readValue(context.getBody(), GetTriggerRequest.class);
-        String name = getJobRequest.getName();
+        GetTriggerRequest getTriggerRequest = mapper.readValue(context.getBody(), GetTriggerRequest.class);
+        String name = getTriggerRequest.getName();
         Trigger returnTrigger = new Trigger();
         returnTrigger.setName(name);
         GetTriggerResponse response = GetTriggerResponse
@@ -61,17 +61,10 @@ public class GetTriggerRequestCommand extends GlueDefaultRequestCommand implemen
         com.lgdisplay.bigdata.api.service.glue.model.Trigger trigger = byName.get();
 
 
-
-
         returnTrigger =
                 mapper.readValue(trigger.getBody(), com.lgdisplay.bigdata.api.service.glue.model.http.Trigger.class);
 
-
         response.setTrigger(returnTrigger);
-
-        System.out.println("~~~~~~~~~~~~getDescription~~~~~~~~~~~"+returnTrigger.getDescription());
-        System.out.println("~~~~~~~~~~~~~getName~~~~~~~~~~"+returnTrigger.getName());
-
 
         context.startStopWatch("GetJob 결과 반환");
 

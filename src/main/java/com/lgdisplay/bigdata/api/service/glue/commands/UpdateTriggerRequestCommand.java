@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lgdisplay.bigdata.api.service.glue.controller.RequestContext;
 import com.lgdisplay.bigdata.api.service.glue.model.Job;
 import com.lgdisplay.bigdata.api.service.glue.model.Trigger;
+import com.lgdisplay.bigdata.api.service.glue.model.TriggerStateEnum;
 import com.lgdisplay.bigdata.api.service.glue.model.http.*;
 import com.lgdisplay.bigdata.api.service.glue.repository.JobRepository;
 import com.lgdisplay.bigdata.api.service.glue.repository.TriggerRepository;
@@ -24,6 +25,10 @@ public class UpdateTriggerRequestCommand extends GlueDefaultRequestCommand imple
     TriggerRepository triggerRepository;
 
     @Autowired
+    JobRepository jobRepository;
+
+
+    @Autowired
     @Qualifier("mapper")
     ObjectMapper mapper;
 
@@ -35,50 +40,60 @@ public class UpdateTriggerRequestCommand extends GlueDefaultRequestCommand imple
     @Override
     public ResponseEntity execute(RequestContext context) throws Exception {
         UpdateTriggerRequest triggerRequest = mapper.readValue(context.getBody(), UpdateTriggerRequest.class);
+        //step1 업데이트 될 context의 body를  UpdateTriggerRequest로 변환한다.
+        //step2 UpdateTriggerRequest에서 각 항목을 추출한다.
+        //step3 db에 저장된 body를 createTriggerRequest로 변환한다.
+        //step4 createTriggerRequest에 각 추출항목을 세팅하고 저장을 한다.
         List<Action> actionList = triggerRequest.getTriggerUpdate().getActions();
-        List<String> jsonList = new ArrayList<>();
-        for (Action action:actionList) {
-            jsonList.add(mapper.writeValueAsString(action));
-        }
         String keyName = triggerRequest.getName();
-        String jsonStr = String.join(",", jsonList);
-        String updateName = triggerRequest.getTriggerUpdate().getName();
         String schedule = triggerRequest.getTriggerUpdate().getSchedule();
         String description = triggerRequest.getTriggerUpdate().getDescription();
 
-        context.startStopWatch("trigger Name 유효성 확인");
-
         com.lgdisplay.bigdata.api.service.glue.model.http.Trigger returnTrigger
                 = new com.lgdisplay.bigdata.api.service.glue.model.http.Trigger();
-        returnTrigger.setName(updateName);
+        returnTrigger.setName(keyName);
         UpdateTriggerResponse response = UpdateTriggerResponse.builder()
                 .trigger(returnTrigger)
                 .build();
 
+        context.startStopWatch("Trigger Name의 null 여부 확인");
         if (StringUtils.isEmpty(keyName)) {
             return ResponseEntity.status(400).body(response);
         }
+        context.startStopWatch(" trigger Name 존재 유무 확인");
 
-        context.startStopWatch("사용자의 trigger Name 유효성 확인");
-
-        Optional<Trigger> byName = triggerRepository.findByName(keyName);
-        if (!byName.isPresent()) {
+        Optional<Trigger> optionalTrigger = triggerRepository.findByName(keyName);
+        if (!optionalTrigger.isPresent()) {
             return ResponseEntity.status(400).body(response);
         }
 
-        Trigger trigger = byName.get();
+        Trigger trigger =optionalTrigger.get();
+        context.startStopWatch("사용자의 Trigger  running 여부 확인");
 
-        context.startStopWatch("Job 수정");
+        if (trigger.getTriggerState().equals(TriggerStateEnum.RUNNING.name())) {
+            log.error(trigger.getName()+" :is running ");
+            return ResponseEntity.status(400).body(response);
+        }
+        context.startStopWatch("update 후 JobName 존재 유무 유효성 확인");
+        for (Action action:actionList) {
+            Optional<Job> optionalJob = jobRepository.findByJobName(action.getJobName());
+            if (!optionalJob.isPresent()) {
+                return ResponseEntity.status(400).body(response);
+            }
+        }
 
-        String body=context.getBody();
-        body=body.replace("\"TriggerUpdate\":{\"Name\":\""+keyName+"\",", "")
-                .replace(",\"Predicate\":{}}}", "");
-        body=body+",\"StartOnCreation\":"+trigger.getStartOnCreate();
-        body=body+",\"WorkflowName\":\""+trigger.getWorkflowName()+"\"";
-        body=body+",\"Type\":\""+trigger.getType()+"\"";
-        body=body+"}";
+
+        //저장될 body 생성
+        CreateTriggerRequest createTriggerRequest = mapper.readValue(trigger.getBody(), CreateTriggerRequest.class);
+        createTriggerRequest.setName(keyName);
+        createTriggerRequest.setSchedule(schedule);
+        createTriggerRequest.setDescription(description);
+        createTriggerRequest.setActions(actionList);
+        createTriggerRequest.setWorkflowName(trigger.getWorkflowName());
+        String body=mapper.writeValueAsString(createTriggerRequest);
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~body~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"+body);
         trigger.setTriggerId(trigger.getTriggerId());
-        trigger.setName(updateName);
+        trigger.setName(keyName);
         trigger.setSchedule(schedule);
         trigger.setDescription(description);
         trigger.setBody(body);
@@ -89,7 +104,7 @@ public class UpdateTriggerRequestCommand extends GlueDefaultRequestCommand imple
         context.startStopWatch("UpdateJob 결과 반환");
 
         returnTrigger.setActions(actionList);
-        returnTrigger.setName(updateName);
+        returnTrigger.setName(keyName);
         returnTrigger.setDescription(description);
         returnTrigger.setSchedule(schedule);
         returnTrigger.setType(trigger.getType());

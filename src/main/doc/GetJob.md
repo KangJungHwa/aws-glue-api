@@ -8,7 +8,7 @@
 ### Request 정리
 
 * JobName 필수 (1~255 길이)
-
+* 모든 사용자이 JOB을 조회할 수 있습니다.
 ```json
 {
   "JobName": "string"
