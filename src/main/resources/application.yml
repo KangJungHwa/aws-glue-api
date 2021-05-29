@@ -8,7 +8,7 @@ spring:
   #################
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
       use-new-id-generator-mappings: false
     generate-ddl: false
     show-sql: true
@@ -39,8 +39,8 @@ spring:
     sql-script-encoding: UTF-8
     continue-on-error: true
     initialization-mode: always
-##    url: jdbc:log4jdbc:mysql://localhost:3306/glue?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
-##    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+#    url: jdbc:log4jdbc:mysql://localhost:3306/glue?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+#    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
 #    url: jdbc:mysql://localhost:3306/glue?serverTimezone=UTC
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 #    username: root
@@ -76,9 +76,8 @@ server:
 #################
 
 app:
+  scheduler-port: 8889
   region-name: korea
-  iam-url: http://localhost:9999/iam
-  scheduler-urls: http://192.168.1.1:8889/glue/scheduler/status, http://192.168.1.2:8889/glue/scheduler/status, http://192.168.1.3:8889/glue/scheduler/status
   service-context-paths:
     glue: /glue
 
@@ -97,4 +96,3 @@ logging:
 
 glue:
   script-type-list: PYTHON,R,MATLAB
-

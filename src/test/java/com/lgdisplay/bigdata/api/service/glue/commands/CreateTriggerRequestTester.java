@@ -19,7 +19,8 @@ public class CreateTriggerRequestTester {
     public static void main(String[] args) throws Exception {
         BasicAWSCredentials awsCreds = new BasicAWSCredentials("ADMIN", "admin123");
 
-        AwsClientBuilder.EndpointConfiguration configuration = new AwsClientBuilder.EndpointConfiguration("http://localhost:8888/glue", "korea");
+        AwsClientBuilder.EndpointConfiguration configuration =
+                new AwsClientBuilder.EndpointConfiguration(EndPoint.getEndPoint(), "korea");
 
         ClientConfiguration clientConfiguration = new ClientConfiguration();
         clientConfiguration.setMaxErrorRetry(0); // 0로 하지 않으면 여러번 호출한다.
@@ -38,22 +39,22 @@ public class CreateTriggerRequestTester {
         List<Action> actionList = new ArrayList<>();
 
         Action action = new Action();
-        action.setJobName("PY_PRINT");
+        action.setJobName("PY_PRINT2");
 
         Action action2 = new Action();
-        action2.setJobName("PY_PRINT1");
+        action2.setJobName("PY_PRINT3");
 
         actionList.add(action);
         actionList.add(action2);
         request.setActions(actionList);
         request.setSchedule("0/10 * * * * ?");
         request.setType("SCHEDULED");
-        request.setStartOnCreation(false);
+        request.setStartOnCreation(true);
 //        request.setType("ON_DEMAND");
 //        request.setStartOnCreation(false);
         request.setDescription("test trigger");
 
-        request.setName("TRIGGER");
+        request.setName("TRIGGER1");
         CreateTriggerResult result = glue.createTrigger(request);
         System.out.println(result.getName());
         //////////////////////////////////////////////////

@@ -14,7 +14,7 @@ public class GetTriggersRequestTester {
         BasicAWSCredentials awsCreds = new BasicAWSCredentials("admin", "admin123");
 
         AwsClientBuilder.EndpointConfiguration configuration =
-                new AwsClientBuilder.EndpointConfiguration("http://localhost:8888/glue", "korea");
+                new AwsClientBuilder.EndpointConfiguration(EndPoint.getEndPoint(), "korea");
 
         ClientConfiguration clientConfiguration = new ClientConfiguration();
         clientConfiguration.setMaxErrorRetry(0); // 0로 하지 않으면 여러번 호출한다.

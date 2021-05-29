@@ -1,7 +1,6 @@
 package com.lgdisplay.bigdata.api.service.glue.commands;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lgdisplay.bigdata.api.service.glue.config.ServierStatusConfiguration;
 import com.lgdisplay.bigdata.api.service.glue.controller.RequestContext;
 import com.lgdisplay.bigdata.api.service.glue.model.Job;
 import com.lgdisplay.bigdata.api.service.glue.model.http.CreateJobRequest;
@@ -46,8 +45,6 @@ public class CreateJobRequestCommand extends GlueDefaultRequestCommand implement
         return "AWSGlue.CreateJob";
     }
 
-    @Autowired
-    ServierStatusConfiguration servierStatusConfiguration;
 
     @Override
     public ResponseEntity execute(RequestContext context) throws Exception {
@@ -56,10 +53,7 @@ public class CreateJobRequestCommand extends GlueDefaultRequestCommand implement
         String jobName = createJobRequest.getName().toUpperCase();
         String scriptName = createJobRequest.getCommand().getName();
         String scriptLocation = createJobRequest.getCommand().getScriptLocation();
-        servierStatusConfiguration.ServerStatusMap().put("Hello", "test~~~~~~~~~~~");
 
-        String str=servierStatusConfiguration.ServerStatusMap().get("Hello");
-        log.info("~~~~~~~~~~~~~~~~~~~~~~~str~~~~~~~~~~~~~~~~~~~~~~"+str);
         CreateJobResponse response = CreateJobResponse.builder().name(jobName).build();
 
         context.startStopWatch("사용자의 Job Name NULL 여부 유효성 확인");

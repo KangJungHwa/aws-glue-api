@@ -137,7 +137,8 @@ public class CreateTriggerRequestCommand extends GlueDefaultRequestCommand imple
             // quartz에 맞추기 위해 하나만 입력한다.
             // 실행시에는 triggerName으로 glue 테이블에 조회해서 실행한다.
             params.put("jobName", jobName);
-
+            //TODO 아래 주석 풀고 copyPublicStorage 메소드 내부에 결로 prefix 수정할 것
+            //resourceService.copyPublicStorage(userName);
             ResponseEntity<String> responseEntity = restTemplate.postForEntity(triggerCreateUrl, params, String.class);
             String schedulerTriggerId = responseEntity.getBody();
             context.getLogging().setSchedulerJobId(schedulerTriggerId);
@@ -150,10 +151,11 @@ public class CreateTriggerRequestCommand extends GlueDefaultRequestCommand imple
             if (!trigger.isPresent()) {
                 return ResponseEntity.status(400).body(response);
             }
-            //
+
             Trigger updateTrigger=trigger.get();
-              updateTrigger.setTriggerState(TriggerStateEnum.RUNNING.name());
+            updateTrigger.setTriggerState(TriggerStateEnum.RUNNING.name());
             triggerRepository.save(updateTrigger);
+
         }
         return ResponseEntity.ok(response);
     }
