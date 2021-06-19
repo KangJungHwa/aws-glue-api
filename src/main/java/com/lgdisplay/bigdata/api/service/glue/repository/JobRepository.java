@@ -1,6 +1,6 @@
 package com.lgdisplay.bigdata.api.service.glue.repository;
 
-        import com.lgdisplay.bigdata.api.service.glue.model.Job;
+import com.lgdisplay.bigdata.api.service.glue.model.Job;
         import org.springframework.data.domain.Pageable;
         import org.springframework.data.jpa.repository.Query;
         import org.springframework.data.repository.CrudRepository;
