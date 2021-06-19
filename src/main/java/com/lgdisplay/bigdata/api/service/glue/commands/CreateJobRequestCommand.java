@@ -49,8 +49,8 @@ public class CreateJobRequestCommand extends GlueDefaultRequestCommand implement
     @Override
     public ResponseEntity execute(RequestContext context) throws Exception {
         CreateJobRequest createJobRequest = mapper.readValue(context.getBody(), CreateJobRequest.class);
-        String userName = context.getUsername().toUpperCase();
-        String jobName = createJobRequest.getName().toUpperCase();
+        String userName = context.getUsername();
+        String jobName = createJobRequest.getName();
         String scriptName = createJobRequest.getCommand().getName();
         String scriptLocation = createJobRequest.getCommand().getScriptLocation();
 

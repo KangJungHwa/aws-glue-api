@@ -57,8 +57,8 @@ public class CreateTriggerRequestCommand extends GlueDefaultRequestCommand imple
         String description = createTriggerRequest.getDescription();
         String type = createTriggerRequest.getType();
         Boolean start_on_creation = createTriggerRequest.getStartOnCreation();
-        String userName=context.getUsername().toUpperCase();
-        String jobName=createTriggerRequest.getActions().get(0).getJobName().toUpperCase();
+        String userName=context.getUsername();
+        String jobName=createTriggerRequest.getActions().get(0).getJobName();
         CreateTriggerResponse response = CreateTriggerResponse.builder().name(name).build();
 
         context.startStopWatch("Trigger Name null 여부 유효성 확인");

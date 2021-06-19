@@ -36,8 +36,8 @@ public class GetJobRunRequestCommand extends GlueDefaultRequestCommand implement
     @Override
     public ResponseEntity execute(RequestContext context) throws Exception {
         GetJobRunRequest getJobRunRequest = mapper.readValue(context.getBody(), GetJobRunRequest.class);
-        String jobName = getJobRunRequest.getJobName().toUpperCase();
-        String runId = getJobRunRequest.getRunId().toUpperCase();
+        String jobName = getJobRunRequest.getJobName();
+        String runId = getJobRunRequest.getRunId();
         GetJobRunResponse response = GetJobRunResponse
                 .builder().jobRuns(JobRuns.builder().jobName(jobName).build())
                 .build();

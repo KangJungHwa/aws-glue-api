@@ -35,8 +35,8 @@ public class GetJobRunsRequestCommand extends GlueDefaultRequestCommand implemen
     public ResponseEntity execute(RequestContext context) throws Exception {
         GetJobRunsRequest getJobRunsRequest = mapper.readValue(context.getBody(), GetJobRunsRequest.class);
         Integer maxResults = getJobRunsRequest.getMaxResults();
-        String jobName = getJobRunsRequest.getJobName().toUpperCase();
-        String userName=context.getUsername().toUpperCase();
+        String jobName = getJobRunsRequest.getJobName();
+        String userName=context.getUsername();
         context.startStopWatch("사용자의 모든 Job Run 조회");
 
         GetJobRunsResponse response = new GetJobRunsResponse();

@@ -48,8 +48,8 @@ public class DeleteTriggerRequestCommand extends GlueDefaultRequestCommand imple
     public ResponseEntity execute(RequestContext context) throws Exception {
         DeleteTriggerRequest deleteTriggerRequest = mapper.readValue(context.getBody(), DeleteTriggerRequest.class);
 
-        String userName=context.getUsername().toUpperCase();
-        String name = deleteTriggerRequest.getName().toUpperCase();
+        String userName=context.getUsername();
+        String name = deleteTriggerRequest.getName();
 
         DeleteTriggerResponse response = DeleteTriggerResponse.builder().name(name).build();
 

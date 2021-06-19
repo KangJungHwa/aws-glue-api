@@ -51,10 +51,10 @@ public class StartJobRunRequestCommand extends GlueDefaultRequestCommand impleme
 
 
         StartJobRunRequest startJobRunRequest = mapper.readValue(context.getBody(), StartJobRunRequest.class);
-        String jobName = startJobRunRequest.getJobName().toUpperCase();
+        String jobName = startJobRunRequest.getJobName();
 
         Map<String, String> arguments = startJobRunRequest.getArguments();
-        String userName=context.getUsername().toUpperCase();
+        String userName=context.getUsername();
         StartJobRunResponse errorResponse = StartJobRunResponse.builder().build();
 
         context.startStopWatch("Job Name 유효성 확인");

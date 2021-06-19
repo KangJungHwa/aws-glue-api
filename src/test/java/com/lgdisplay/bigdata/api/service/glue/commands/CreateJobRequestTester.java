@@ -35,9 +35,9 @@ public class CreateJobRequestTester {
 
 
 
-//        command.setScriptLocation("print_alpha.py");
-//        request.setCommand(command);
-//        request.setName("PY_PRINT");
+        command.setScriptLocation("print_alpha.py");
+        request.setCommand(command);
+        request.setName("PY_PRINT");
 
 //        command.setScriptLocation("print_han_alpha.py");
 //        request.setCommand(command);
@@ -47,9 +47,9 @@ public class CreateJobRequestTester {
 //        request.setCommand(command);
 //        request.setName("PY_PRINT2");
 //
-        command.setScriptLocation("print_han_number.py");
-        request.setCommand(command);
-        request.setName("PY_PRINT3");
+//        command.setScriptLocation("print_han_number.py");
+//        request.setCommand(command);
+//        request.setName("PY_PRINT3");
 
         CreateJobResult result = glue.createJob(request);
         System.out.println(result.getName());

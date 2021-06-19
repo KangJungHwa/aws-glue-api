@@ -86,8 +86,8 @@ public class StartTriggerRequestCommand extends GlueDefaultRequestCommand implem
         HashMap params = new HashMap();
 
         params.put("triggerName", name);
-        params.put("userName", context.getUsername().toUpperCase());
-        params.put("jobName", byName.get().getJobName().toUpperCase());
+        params.put("userName", context.getUsername());
+        params.put("jobName", byName.get().getJobName());
 
 
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(triggerUrl, params, String.class);

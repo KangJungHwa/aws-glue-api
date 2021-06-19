@@ -17,7 +17,7 @@ import java.util.Map;
 public class CreateTriggerRequestTester {
 
     public static void main(String[] args) throws Exception {
-        BasicAWSCredentials awsCreds = new BasicAWSCredentials("ADMIN", "admin123");
+        BasicAWSCredentials awsCreds = new BasicAWSCredentials("admin", "admin123");
 
         AwsClientBuilder.EndpointConfiguration configuration =
                 new AwsClientBuilder.EndpointConfiguration(EndPoint.getEndPoint(), "korea");
@@ -39,10 +39,10 @@ public class CreateTriggerRequestTester {
         List<Action> actionList = new ArrayList<>();
 
         Action action = new Action();
-        action.setJobName("PY_PRINT2");
+        action.setJobName("PY_PRINT");
 
         Action action2 = new Action();
-        action2.setJobName("PY_PRINT3");
+        action2.setJobName("PY_PRINT1");
 
         actionList.add(action);
         actionList.add(action2);

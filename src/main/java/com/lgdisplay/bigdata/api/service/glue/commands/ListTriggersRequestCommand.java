@@ -38,7 +38,7 @@ public class ListTriggersRequestCommand extends GlueDefaultRequestCommand implem
     public ResponseEntity execute(RequestContext context) throws Exception {
         ListTriggersRequest request = mapper.readValue(context.getBody(), ListTriggersRequest.class);
         Integer maxResults = request.getMaxResults();
-        String userName=context.getUsername().toUpperCase();
+        String userName=context.getUsername();
         context.startStopWatch("사용자의 모든 Trigger 조회");
 
         List<String> triggerNames= null;

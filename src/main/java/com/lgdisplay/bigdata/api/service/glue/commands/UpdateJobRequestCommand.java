@@ -37,10 +37,10 @@ public class UpdateJobRequestCommand extends GlueDefaultRequestCommand implement
     @Override
     public ResponseEntity execute(RequestContext context) throws Exception {
         UpdateJobRequest JobRequest = mapper.readValue(context.getBody(), UpdateJobRequest.class);
-        String jobName = JobRequest.getJobName().toUpperCase();
+        String jobName = JobRequest.getJobName();
         String scriptName = JobRequest.getJobUpdate().getJobCommand().getName();
         String scriptLocation = JobRequest.getJobUpdate().getJobCommand().getScriptLocation();
-        String userName=context.getUsername().toUpperCase();
+        String userName=context.getUsername();
         UpdateJobResponse response = UpdateJobResponse.builder().jobName(jobName).build();
 
         context.startStopWatch("JobName Parameter 유무 확인");

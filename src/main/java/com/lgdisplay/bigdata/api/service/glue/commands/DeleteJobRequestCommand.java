@@ -32,8 +32,8 @@ public class DeleteJobRequestCommand extends GlueDefaultRequestCommand implement
     @Override
     public ResponseEntity execute(RequestContext context) throws Exception {
         DeleteJobRequest deleteJobRequest = mapper.readValue(context.getBody(), DeleteJobRequest.class);
-        String jobName = deleteJobRequest.getJobName().toUpperCase();
-        String userName=context.getUsername().toUpperCase();
+        String jobName = deleteJobRequest.getJobName();
+        String userName=context.getUsername();
 
         DeleteJobResponse response = DeleteJobResponse.builder().jobName(jobName).build();
 

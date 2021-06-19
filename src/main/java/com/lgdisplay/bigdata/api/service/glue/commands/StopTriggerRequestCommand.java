@@ -47,7 +47,7 @@ public class StopTriggerRequestCommand extends GlueDefaultRequestCommand impleme
         StopTriggerRequest stopJobRunRequest = mapper.readValue(context.getBody(), StopTriggerRequest.class);
 
         String name = stopJobRunRequest.getName();
-        String userName = context.getUsername().toUpperCase();
+        String userName = context.getUsername();
         StopTriggerResponse response = StopTriggerResponse.builder().build();
 
         context.startStopWatch("Trigger Name 유효성 확인");
