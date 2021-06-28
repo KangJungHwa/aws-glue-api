@@ -2,6 +2,7 @@ package com.lgdisplay.bigdata.api.service.glue.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Input Output Utility.
@@ -12,7 +13,7 @@ public class IOUtils {
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             org.apache.commons.io.IOUtils.copy(is, baos);
-            return new String(baos.toByteArray(), "UTF-8");
+            return new String(baos.toByteArray(), StandardCharsets.UTF_8);
         } catch (Exception e) {
             if (ignoreOnError) {
                 return "";

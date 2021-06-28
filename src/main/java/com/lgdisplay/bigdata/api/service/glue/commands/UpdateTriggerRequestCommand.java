@@ -112,7 +112,7 @@ public class UpdateTriggerRequestCommand extends GlueDefaultRequestCommand imple
         returnTrigger.setId(trigger.getTriggerId());
 
 
-        response.builder()
+        UpdateTriggerResponse.builder()
                 .trigger(returnTrigger)
                 .build();
 

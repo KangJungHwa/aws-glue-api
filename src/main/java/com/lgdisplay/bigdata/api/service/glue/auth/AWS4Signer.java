@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -389,7 +390,7 @@ public class AWS4Signer extends AbstractAWSSigner implements ServiceAwareSigner,
      */
     protected final byte[] computeSignature(String stringToSign,
                                             byte[] signingKey, AWS4SignerRequestParams signerRequestParams) {
-        return sign(stringToSign.getBytes(Charset.forName("UTF-8")), signingKey,
+        return sign(stringToSign.getBytes(StandardCharsets.UTF_8), signingKey,
                 SigningAlgorithm.HmacSHA256);
     }
 
@@ -591,7 +592,7 @@ public class AWS4Signer extends AbstractAWSSigner implements ServiceAwareSigner,
     protected byte[] newSigningKey(AWSCredentials credentials,
                                    String dateStamp, String regionName, String serviceName) {
         byte[] kSecret = ("AWS4" + credentials.getAWSSecretKey())
-                .getBytes(Charset.forName("UTF-8"));
+                .getBytes(StandardCharsets.UTF_8);
         byte[] kDate = sign(dateStamp, kSecret, SigningAlgorithm.HmacSHA256);
         byte[] kRegion = sign(regionName, kDate, SigningAlgorithm.HmacSHA256);
         byte[] kService = sign(serviceName, kRegion,

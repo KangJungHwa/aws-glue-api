@@ -14,7 +14,7 @@ public class RsyncCopy extends Thread {
     String jobType=null;
     boolean isSuccess=false;
     String[] sourceExtraPyfiles=null;
-    String[] sourceExtraFiles=null;;
+    String[] sourceExtraFiles=null;
 
     @Override
    public void run(){

@@ -119,11 +119,11 @@ public class FormatterUtils {
             if (values[i] == null) {
                 value = "    ";
             } else if (values[i] instanceof Long) {
-                value = String.valueOf(((Long) values[i]));
+                value = String.valueOf(values[i]);
             } else if (values[i] instanceof Integer) {
-                value = String.valueOf(((Integer) values[i]));
+                value = String.valueOf(values[i]);
             } else if (values[i] instanceof Boolean) {
-                value = String.valueOf(((Boolean) values[i]));
+                value = String.valueOf(values[i]);
             } else if (values[i] instanceof String) {
                 value = (String) values[i];
             } else {

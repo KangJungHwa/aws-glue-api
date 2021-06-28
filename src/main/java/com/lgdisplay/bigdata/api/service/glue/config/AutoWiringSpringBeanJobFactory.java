@@ -1,5 +1,6 @@
 package com.lgdisplay.bigdata.api.service.glue.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.quartz.spi.TriggerFiredBundle;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
@@ -7,6 +8,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.scheduling.quartz.SpringBeanJobFactory;
 
+@Slf4j
 public final class AutoWiringSpringBeanJobFactory extends SpringBeanJobFactory implements ApplicationContextAware {
 
     private transient AutowireCapableBeanFactory beanFactory;
@@ -19,6 +21,8 @@ public final class AutoWiringSpringBeanJobFactory extends SpringBeanJobFactory i
     protected Object createJobInstance(final TriggerFiredBundle bundle) throws Exception {
         final Object job = super.createJobInstance(bundle);
         beanFactory.autowireBean(job);
+        log.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" + job);
+
         return job;
     }
 

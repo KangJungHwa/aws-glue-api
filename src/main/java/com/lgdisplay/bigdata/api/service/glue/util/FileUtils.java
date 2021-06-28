@@ -103,7 +103,7 @@ public class FileUtils {
     public static boolean pathValidator(String path) {
         String[] invalidString = {"//", "/ /", "null"};
         for (String str : invalidString) {
-            if (org.apache.commons.lang.StringUtils.contains(path, String.valueOf(str))) {
+            if (org.apache.commons.lang.StringUtils.contains(path, str)) {
                 return false;
             }
         }
