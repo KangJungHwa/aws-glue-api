@@ -18,7 +18,7 @@
         <aws.java.sdk.version>1.11.887</aws.java.sdk.version>
         <spring.boot.version>2.4.2</spring.boot.version>
         <log4jdbc.version>1.16</log4jdbc.version>
-        <mysql.version>8.0.22</mysql.version>
+        <mysql.version>8.0.28</mysql.version>
         <hikaricp.version>3.4.5</hikaricp.version>
         <swagger.version>3.0.0</swagger.version>
         <guava.version>18.0</guava.version>
